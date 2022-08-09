@@ -103,38 +103,6 @@ The tree node.
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### DeploymentSourceContext <a name="DeploymentSourceContext" id="cdk-docker-image-deployment.DeploymentSourceContext"></a>
-
-Bind context for ISources.
-
-#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.DeploymentSourceContext.Initializer"></a>
-
-```typescript
-import { DeploymentSourceContext } from 'cdk-docker-image-deployment'
-
-const deploymentSourceContext: DeploymentSourceContext = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.DeploymentSourceContext.property.handlerRole">handlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role for the handler. |
-
----
-
-##### `handlerRole`<sup>Required</sup> <a name="handlerRole" id="cdk-docker-image-deployment.DeploymentSourceContext.property.handlerRole"></a>
-
-```typescript
-public readonly handlerRole: IRole;
-```
-
-- *Type:* aws-cdk-lib.aws_iam.IRole
-
-The role for the handler.
-
----
-
 ### DestinationConfig <a name="DestinationConfig" id="cdk-docker-image-deployment.DestinationConfig"></a>
 
 #### Initializer <a name="Initializer" id="cdk-docker-image-deployment.DestinationConfig.Initializer"></a>
@@ -149,15 +117,15 @@ const destinationConfig: DestinationConfig = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.destinationURI">destinationURI</a></code> | <code>string</code> | The URI of the destination repository to deploy to. |
+| <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.destinationUri">destinationUri</a></code> | <code>string</code> | The URI of the destination repository to deploy to. |
 | <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.destinationTag">destinationTag</a></code> | <code>string</code> | The tag of the deployed image. |
 
 ---
 
-##### `destinationURI`<sup>Required</sup> <a name="destinationURI" id="cdk-docker-image-deployment.DestinationConfig.property.destinationURI"></a>
+##### `destinationUri`<sup>Required</sup> <a name="destinationUri" id="cdk-docker-image-deployment.DestinationConfig.property.destinationUri"></a>
 
 ```typescript
-public readonly destinationURI: string;
+public readonly destinationUri: string;
 ```
 
 - *Type:* string
@@ -239,18 +207,18 @@ const dockerImageDeploymentProps: DockerImageDeploymentProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.destination">destination</a></code> | <code><a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a></code> | Destination repository to deploy the image to. |
-| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.source">source</a></code> | <code><a href="#cdk-docker-image-deployment.ISource">ISource</a></code> | Source of image to deploy. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.destination">destination</a></code> | <code><a href="#cdk-docker-image-deployment.Destination">Destination</a></code> | Destination repository to deploy the image to. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.source">source</a></code> | <code><a href="#cdk-docker-image-deployment.Source">Source</a></code> | Source of image to deploy. |
 
 ---
 
 ##### `destination`<sup>Required</sup> <a name="destination" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.destination"></a>
 
 ```typescript
-public readonly destination: DestinationConfig;
+public readonly destination: Destination;
 ```
 
-- *Type:* <a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a>
+- *Type:* <a href="#cdk-docker-image-deployment.Destination">Destination</a>
 
 Destination repository to deploy the image to.
 
@@ -259,10 +227,10 @@ Destination repository to deploy the image to.
 ##### `source`<sup>Required</sup> <a name="source" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.source"></a>
 
 ```typescript
-public readonly source: ISource;
+public readonly source: Source;
 ```
 
-- *Type:* <a href="#cdk-docker-image-deployment.ISource">ISource</a>
+- *Type:* <a href="#cdk-docker-image-deployment.Source">Source</a>
 
 Source of image to deploy.
 
@@ -283,7 +251,7 @@ const sourceConfig: SourceConfig = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.SourceConfig.property.imageTag">imageTag</a></code> | <code>string</code> | The source tag. |
-| <code><a href="#cdk-docker-image-deployment.SourceConfig.property.imageURI">imageURI</a></code> | <code>string</code> | The source imageURI. |
+| <code><a href="#cdk-docker-image-deployment.SourceConfig.property.imageUri">imageUri</a></code> | <code>string</code> | The source image URI. |
 
 ---
 
@@ -299,15 +267,47 @@ The source tag.
 
 ---
 
-##### `imageURI`<sup>Required</sup> <a name="imageURI" id="cdk-docker-image-deployment.SourceConfig.property.imageURI"></a>
+##### `imageUri`<sup>Required</sup> <a name="imageUri" id="cdk-docker-image-deployment.SourceConfig.property.imageUri"></a>
 
 ```typescript
-public readonly imageURI: string;
+public readonly imageUri: string;
 ```
 
 - *Type:* string
 
-The source imageURI.
+The source image URI.
+
+---
+
+### SourceContext <a name="SourceContext" id="cdk-docker-image-deployment.SourceContext"></a>
+
+Bind context for ISources.
+
+#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.SourceContext.Initializer"></a>
+
+```typescript
+import { SourceContext } from 'cdk-docker-image-deployment'
+
+const sourceContext: SourceContext = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.SourceContext.property.handlerRole">handlerRole</a></code> | <code>aws-cdk-lib.aws_iam.IRole</code> | The role for the handler. |
+
+---
+
+##### `handlerRole`<sup>Required</sup> <a name="handlerRole" id="cdk-docker-image-deployment.SourceContext.property.handlerRole"></a>
+
+```typescript
+public readonly handlerRole: IRole;
+```
+
+- *Type:* aws-cdk-lib.aws_iam.IRole
+
+The role for the handler.
 
 ---
 
@@ -338,10 +338,148 @@ Destination.ecr(destinationProps: DestinationProps)
 
 ---
 
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.Destination.property.config">config</a></code> | <code><a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Destination.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_ecr.IRepository</code> | *No description.* |
+
+---
+
+##### `config`<sup>Required</sup> <a name="config" id="cdk-docker-image-deployment.Destination.property.config"></a>
+
+```typescript
+public readonly config: DestinationConfig;
+```
+
+- *Type:* <a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a>
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.Destination.property.repository"></a>
+
+```typescript
+public readonly repository: IRepository;
+```
+
+- *Type:* aws-cdk-lib.aws_ecr.IRepository
+
+---
+
+
+### DirectorySource <a name="DirectorySource" id="cdk-docker-image-deployment.DirectorySource"></a>
+
+#### Initializers <a name="Initializers" id="cdk-docker-image-deployment.DirectorySource.Initializer"></a>
+
+```typescript
+import { DirectorySource } from 'cdk-docker-image-deployment'
+
+new DirectorySource(path: string)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.DirectorySource.Initializer.parameter.path">path</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `path`<sup>Required</sup> <a name="path" id="cdk-docker-image-deployment.DirectorySource.Initializer.parameter.path"></a>
+
+- *Type:* string
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.DirectorySource.bind">bind</a></code> | *No description.* |
+
+---
+
+##### `bind` <a name="bind" id="cdk-docker-image-deployment.DirectorySource.bind"></a>
+
+```typescript
+public bind(scope: Construct, context?: SourceContext): SourceConfig
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.DirectorySource.bind.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `context`<sup>Optional</sup> <a name="context" id="cdk-docker-image-deployment.DirectorySource.bind.parameter.context"></a>
+
+- *Type:* <a href="#cdk-docker-image-deployment.SourceContext">SourceContext</a>
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.DirectorySource.directory">directory</a></code> | *No description.* |
+
+---
+
+##### `directory` <a name="directory" id="cdk-docker-image-deployment.DirectorySource.directory"></a>
+
+```typescript
+import { DirectorySource } from 'cdk-docker-image-deployment'
+
+DirectorySource.directory(path: string)
+```
+
+###### `path`<sup>Required</sup> <a name="path" id="cdk-docker-image-deployment.DirectorySource.directory.parameter.path"></a>
+
+- *Type:* string
+
+---
+
 
 
 ### Source <a name="Source" id="cdk-docker-image-deployment.Source"></a>
 
+#### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Source.Initializer"></a>
+
+```typescript
+import { Source } from 'cdk-docker-image-deployment'
+
+new Source()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.Source.bind">bind</a></code> | *No description.* |
+
+---
+
+##### `bind` <a name="bind" id="cdk-docker-image-deployment.Source.bind"></a>
+
+```typescript
+public bind(scope: Construct, context?: SourceContext): SourceConfig
+```
+
+###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.Source.bind.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `context`<sup>Optional</sup> <a name="context" id="cdk-docker-image-deployment.Source.bind.parameter.context"></a>
+
+- *Type:* <a href="#cdk-docker-image-deployment.SourceContext">SourceContext</a>
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -366,41 +504,5 @@ Source.directory(path: string)
 ---
 
 
-
-## Protocols <a name="Protocols" id="Protocols"></a>
-
-### ISource <a name="ISource" id="cdk-docker-image-deployment.ISource"></a>
-
-- *Implemented By:* <a href="#cdk-docker-image-deployment.ISource">ISource</a>
-
-#### Methods <a name="Methods" id="Methods"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#cdk-docker-image-deployment.ISource.bind">bind</a></code> | Binds the source to a docker image deployment. |
-
----
-
-##### `bind` <a name="bind" id="cdk-docker-image-deployment.ISource.bind"></a>
-
-```typescript
-public bind(scope: Construct, context?: DeploymentSourceContext): SourceConfig
-```
-
-Binds the source to a docker image deployment.
-
-###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.ISource.bind.parameter.scope"></a>
-
-- *Type:* constructs.Construct
-
-The construct tree context.
-
----
-
-###### `context`<sup>Optional</sup> <a name="context" id="cdk-docker-image-deployment.ISource.bind.parameter.context"></a>
-
-- *Type:* <a href="#cdk-docker-image-deployment.DeploymentSourceContext">DeploymentSourceContext</a>
-
----
 
 

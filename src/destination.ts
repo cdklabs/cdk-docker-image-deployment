@@ -1,5 +1,4 @@
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import * as iam from 'aws-cdk-lib/aws-iam';
 
 export interface DestinationConfig {
   /**
@@ -29,8 +28,12 @@ export interface DestinationProps {
 
 export class Destination {
   public static ecr(destinationProps: DestinationProps): Destination {
-    return new Destination(destinationProps.repository.repositoryUri, destinationProps.tag);
+    return new Destination(destinationProps.repository, {
+      destinationUri: destinationProps.repository.repositoryUri,
+      destinationTag: destinationProps.tag,
+    });
   };
 
-  private constructor (public readonly destinationUri: string, public readonly destinationTag?: string) {}
+  private constructor (public readonly repository: ecr.IRepository, public readonly config: DestinationConfig) {
+  }
 }

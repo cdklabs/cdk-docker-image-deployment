@@ -1,26 +1,21 @@
-//import * as path from 'path';
 import { Stack } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
-//import * as ecr from 'aws-cdk-lib/aws-ecr';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
-
-//import { DestinationConfig } from './destination';
-import { Source, DirectorySource } from './source';
-//import { ISource, SourceConfig } from './source';
-
+import { Destination } from './destination';
+import { Source } from './source';
 
 export interface DockerImageDeploymentProps {
   /**
    * Source of image to deploy.
    */
-  readonly source: ISource;
+  readonly source: Source;
 
   /**
    * Destination repository to deploy the image to.
    */
-  readonly destination: DestinationConfig;
+  readonly destination: Destination;
 }
 
 export class DockerImageDeployment extends Construct {
@@ -29,61 +24,32 @@ export class DockerImageDeployment extends Construct {
   constructor(scope: Construct, id: string, props: DockerImageDeploymentProps) {
     super(scope, id);
 
-
-    const codebuildrole = new iam.Role(this, 'codebuildroleUniqueID', {
+    const handlerRole = new iam.Role(this, 'DockerImageDeployRole', {
       assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com'),
-      roleName: 'codebuildrole',
+      roleName: 'codebuildrole123',
     });
-    codebuildrole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'ecr:BatchCheckLayerAvailability',
-        'ecr:CompleteLayerUpload',
-        'ecr:GetAuthorizationToken',
-        'ecr:InitiateLayerUpload',
-        'ecr:PutImage',
-        'ecr:UploadLayerPart',
-        'ecr:GetDownloadUrlForLayer',
-        'ecr:BatchGetImage',
-        'ecr:BatchCheckLayerAvailability',
-      ],
-      resources: ['*'],
-    }));
 
+    props.destination.repository.grantPullPush(handlerRole);
 
-    // should put these in a function
+    const sourceConfig = props.source.bind(this, { handlerRole });
 
-    // is this necessary?
-    // try doing this without role
-    // is this the right role if the bind is needed?
-    const sourceConfig: SourceConfig = props?.source.bind(this, { handlerRole: codebuildrole });
-    const sourceURI: string = sourceConfig.imageURI;
+    const sourceUri: string = sourceConfig.imageUri;
 
-    let destURI: string = props.destination.destinationURI + ':';
+    const destTag: string = props.destination.config.destinationTag ?? sourceConfig.imageTag;
+    const destUri: string = `${props.destination.config.destinationUri}:${destTag}`;
 
-    if (props.destination.destinationTag === undefined) {
-      destURI += sourceConfig.imageTag;
-    } else {
-      destURI += props.destination.destinationTag;
-    }
-
-    // think about why we need these
-    // will there need to be a logout and login for pushing somewhere else - probably, can address with source / dest interfaces
     const accountId: string = Stack.of(this).account;
     const region: string = Stack.of(this).region;
 
-
     const commandList = [
       `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${region}.amazonaws.com`,
-      `docker pull ${sourceURI}`,
-      `docker tag ${sourceURI} ${destURI}`,
-      `docker push ${destURI}`,
+      `docker pull ${sourceUri}`,
+      `docker tag ${sourceUri} ${destUri}`,
+      `docker push ${destUri}`,
     ];
 
-
-    // need to think about staging
-    this.cb = new codebuild.Project(this, 'codebuildUniqueID', {
+    this.cb = new codebuild.Project(this, 'DockerImageDeployProject', {
       buildSpec: codebuild.BuildSpec.fromObject({
-        // version: '0.2'?
         version: '0.2',
         phases: {
           build: {
@@ -91,13 +57,15 @@ export class DockerImageDeployment extends Construct {
           },
         },
       }),
-      environment: { privileged: true, buildImage: codebuild.LinuxBuildImage.STANDARD_5_0 },
-      role: codebuildrole,
-
+      environment: {
+        privileged: true,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+      },
+      role: handlerRole,
     });
 
-    new cr.AwsCustomResource(this, 'startcodebuildUniqueID', {
-      onCreate: {
+    new cr.AwsCustomResource(this, 'DockerImageDeployCustomeResource', {
+      onUpdate: {
         service: 'CodeBuild',
         action: 'startBuild',
         parameters: {
@@ -109,6 +77,5 @@ export class DockerImageDeployment extends Construct {
         resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE,
       }),
     });
-
   }
 }
