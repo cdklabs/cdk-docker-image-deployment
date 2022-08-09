@@ -1,14 +1,11 @@
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-//import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
-//import * as iam from 'aws-cdk-lib/aws-iam';
-//import { Construct } from 'constructs';
-
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export interface DestinationConfig {
   /**
    * The URI of the destination repository to deploy to.
    */
-  readonly destinationURI: string;
+  readonly destinationUri: string;
 
   /**
    * The tag of the deployed image.
@@ -31,12 +28,9 @@ export interface DestinationProps {
 }
 
 export class Destination {
-  public static ecr(destinationProps: DestinationProps): DestinationConfig {
-    return {
-      destinationURI: destinationProps.repository.repositoryUri,
-      destinationTag: destinationProps.tag,
-    };
+  public static ecr(destinationProps: DestinationProps): Destination {
+    return new Destination(destinationProps.repository.repositoryUri, destinationProps.tag);
   };
 
-  private constructor () {}
+  private constructor (public readonly destinationUri: string, public readonly destinationTag?: string) {}
 }
