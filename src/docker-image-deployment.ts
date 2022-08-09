@@ -5,8 +5,10 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
-import { DestinationConfig } from './destination';
-import { ISource, SourceConfig } from './source';
+
+//import { DestinationConfig } from './destination';
+import { Source, DirectorySource } from './source';
+//import { ISource, SourceConfig } from './source';
 
 
 export interface DockerImageDeploymentProps {

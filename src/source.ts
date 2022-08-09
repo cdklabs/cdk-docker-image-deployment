@@ -6,9 +6,9 @@ import { Construct } from 'constructs';
 
 export interface SourceConfig {
   /**
-   * The source imageURI.
+   * The source imageUri.
    */
-  readonly imageURI: string;
+  readonly imageUri: string;
 
   /**
    * The source tag.
@@ -20,7 +20,7 @@ export interface SourceConfig {
 /**
  * Bind context for ISources
  */
-export interface DeploymentSourceContext {
+export interface SourceContext {
   /**
    * The role for the handler
    */
@@ -28,14 +28,59 @@ export interface DeploymentSourceContext {
 }
 
 // needs to be called ISource since 'Interface contains behavior'
-export interface ISource {
+//export interface ISource {
   /**
    * Binds the source to a docker image deployment.
    * @param scope The construct tree context.
    */
-  bind(scope: Construct, context?: DeploymentSourceContext): SourceConfig;
+  //bind(scope: Construct, context?: DeploymentSourceContext): SourceConfig;
+//}
+
+export abstract class Source {
+  public imageUri: string;
+  public imageTag: string;
+  
+  public abstract bind(scope: Construct, context?: SourceContext): void;
+  
+  public static directory(path: string): DirectorySource {
+    return new DirectorySource(path);
+  }
+
+  protected constructor() {}
 }
 
+export class DirectorySource extends Source{
+  private path: string
+  
+  constructor(path: string) {
+    super();
+    this.path = path;
+  }
+
+  public bind(scope: Construct, context?: SourceContext): void {
+    if (!context) {
+      throw new Error('To use a Source.directory(), context must be provided');
+    }
+
+    let id = 1;
+    while (scope.node.tryFindChild(`Assets${id}`)) {
+      id += 1;
+    }
+
+    const asset = new ecr_assets.DockerImageAsset(scope, `Asset${id}`, {
+      directory: this.path,
+    });
+
+    // validation for directory vs file
+
+    asset.repository.grantPull(context.handlerRole);
+
+    this.imageUri = asset.imageUri;
+    this.imageTag = asset.assetHash;
+  }
+}
+
+/*
 export class Source {
   public static directory(path: string): ISource { // TODO: add build props
     return {
@@ -56,13 +101,13 @@ export class Source {
         // does there need to be a validation check here? I dont think so since it will fail at synth time if image is not found at path
 
         return {
-          imageURI: asset.imageUri,
+          imageUri: asset.imageUri,
           imageTag: asset.assetHash,
         };
       },
     };
   }
-
+*/
   // TODO: add more sources
   /*
   // untested
@@ -75,7 +120,7 @@ export class Source {
 
         return {
           login: { sourceLocation: sourceLocations.ECR},
-          imageURI: asset.imageUri
+          imageUri: asset.imageUri
         };
       },
     };
@@ -91,7 +136,7 @@ export class Source {
 
         return {
           login: { sourceLocation: sourceLocations.ECR, ecrRegion: repository.env.region ,ecrAccount: repository.env.account},
-          imageURI: repository.repositoryUriForTag(tag)
+          imageUri: repository.repositoryUriForTag(tag)
         };
       },
     };
@@ -106,7 +151,8 @@ export class Source {
   public s3(bucket: s3.IBucket, zipObjectKey: string): ISource {
 
   }
-  */
+  
 
   private constructor () {}
 }
+*/
