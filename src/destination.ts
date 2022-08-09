@@ -27,10 +27,10 @@ export interface DestinationProps {
 }
 
 export class Destination {
-  public static ecr(destinationProps: DestinationProps): Destination {
-    return new Destination(destinationProps.repository, {
-      destinationUri: destinationProps.repository.repositoryUri,
-      destinationTag: destinationProps.tag,
+  public static ecr(repository: ecr.IRepository, tag?: string): Destination {
+    return new Destination(repository, {
+      destinationUri: repository.repositoryUri,
+      destinationTag: tag,
     });
   };
 

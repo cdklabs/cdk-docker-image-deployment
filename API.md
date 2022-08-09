@@ -329,12 +329,18 @@ The role for the handler.
 ```typescript
 import { Destination } from 'cdk-docker-image-deployment'
 
-Destination.ecr(destinationProps: DestinationProps)
+Destination.ecr(repository: IRepository, tag?: string)
 ```
 
-###### `destinationProps`<sup>Required</sup> <a name="destinationProps" id="cdk-docker-image-deployment.Destination.ecr.parameter.destinationProps"></a>
+###### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.Destination.ecr.parameter.repository"></a>
 
-- *Type:* <a href="#cdk-docker-image-deployment.DestinationProps">DestinationProps</a>
+- *Type:* aws-cdk-lib.aws_ecr.IRepository
+
+---
+
+###### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.Destination.ecr.parameter.tag"></a>
+
+- *Type:* string
 
 ---
 

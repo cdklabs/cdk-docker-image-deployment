@@ -10,7 +10,7 @@ export class DockerImageDeploymentStack extends Stack {
     // with tag
     new imagedeploy.DockerImageDeployment(this, 'imagedeploywithtag', {
       source: imagedeploy.Source.directory('src/assets'),
-      destination: imagedeploy.Destination.ecr({ repository: ecr.Repository.fromRepositoryName(this, 'mydestRepo', 'poc2destination'), tag: 'deploythis2' }),
+      destination: imagedeploy.Destination.ecr(ecr.Repository.fromRepositoryName(this, 'mydestRepo', 'poc2destination'), 'deploythis2'),
     });
   }
 }
