@@ -48,7 +48,7 @@ export abstract class Source {
 /**
  * Source of docker image deployment is a local image from a directory
  */
-class DirectorySource extends Source {
+export class DirectorySource extends Source {
   private path: string;
 
   constructor(path: string) {

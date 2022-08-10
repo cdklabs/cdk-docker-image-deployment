@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { Construct } from 'constructs';
@@ -12,7 +13,7 @@ export class DockerImageDeploymentStack extends Stack {
     });
 
     new imagedeploy.DockerImageDeployment(this, 'imagedeploywithtag', {
-      source: imagedeploy.Source.directory('src/assets'),
+      source: imagedeploy.Source.directory(path.join(__dirname, '../../src/assets')),
       destination: imagedeploy.Destination.ecr(repo, 'newtag2'),
     });
   }

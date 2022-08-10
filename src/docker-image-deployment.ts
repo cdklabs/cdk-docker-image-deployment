@@ -88,7 +88,7 @@ export class DockerImageDeployment extends Construct {
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()),
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cb.projectArn]
+        resources: [this.cb.projectArn],
       }),
     });
   }
