@@ -7,10 +7,13 @@ export class DockerImageDeploymentStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // with tag
+    const repo = new ecr.Repository(this, 'mydockerimagedeploytestrepo', {
+      repositoryName: 'nameofdidtestrepo',
+    });
+
     new imagedeploy.DockerImageDeployment(this, 'imagedeploywithtag', {
       source: imagedeploy.Source.directory('src/assets'),
-      destination: imagedeploy.Destination.ecr(ecr.Repository.fromRepositoryName(this, 'mydestRepo', 'poc2destination'), 'deploythis2'),
+      destination: imagedeploy.Destination.ecr(repo, 'newtag2'),
     });
   }
 }

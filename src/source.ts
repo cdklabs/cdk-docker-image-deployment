@@ -24,7 +24,20 @@ export interface SourceContext {
   readonly handlerRole: iam.IRole;
 }
 
+/**
+ * Specifies docker image deployment source
+ *
+ * Usage:
+ *
+ *  Source.directory('path/to/directory')
+ *
+ */
 export abstract class Source {
+  /**
+   * Uses a local image built from a Dockerfile in a local directory as the source
+   *
+   * @param path
+   */
   public static directory(path: string): DirectorySource {
     return new DirectorySource(path);
   }
@@ -32,7 +45,10 @@ export abstract class Source {
   public abstract bind(scope: Construct, context?: SourceContext): SourceConfig;
 }
 
-export class DirectorySource extends Source {
+/**
+ * Source of docker image deployment is a local image from a directory
+ */
+class DirectorySource extends Source {
   private path: string;
 
   constructor(path: string) {

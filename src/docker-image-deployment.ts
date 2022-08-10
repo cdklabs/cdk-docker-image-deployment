@@ -8,7 +8,7 @@ import { Source } from './source';
 
 export interface DockerImageDeploymentProps {
   /**
-   * Source of image to deploy.
+   * Source of the image to deploy.
    */
   readonly source: Source;
 
@@ -18,6 +18,9 @@ export interface DockerImageDeploymentProps {
   readonly destination: Destination;
 }
 
+/**
+ * `DockerImageDeployment` pushes an image from a local or external source to a specified external destination
+ */
 export class DockerImageDeployment extends Construct {
   private readonly cb: codebuild.Project;
 
@@ -26,10 +29,9 @@ export class DockerImageDeployment extends Construct {
 
     const handlerRole = new iam.Role(this, 'DockerImageDeployRole', {
       assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com'),
-      roleName: 'codebuildrole123',
     });
 
-    props.destination.repository.grantPullPush(handlerRole);
+    props.destination.grantPermissions(handlerRole);
 
     const sourceConfig = props.source.bind(this, { handlerRole });
 
@@ -41,10 +43,16 @@ export class DockerImageDeployment extends Construct {
     const accountId: string = Stack.of(this).account;
     const region: string = Stack.of(this).region;
 
-    const commandList = [
+    const sourceLoginCommands = [
       `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${region}.amazonaws.com`,
+    ];
+
+    const getImageCommands = [
       `docker pull ${sourceUri}`,
       `docker tag ${sourceUri} ${destUri}`,
+    ];
+
+    const pushImageCommands = [
       `docker push ${destUri}`,
     ];
 
@@ -52,8 +60,14 @@ export class DockerImageDeployment extends Construct {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
+          pre_build: {
+            commands: sourceLoginCommands,
+          },
           build: {
-            commands: commandList,
+            commands: getImageCommands,
+          },
+          post_build: {
+            commands: pushImageCommands,
           },
         },
       }),
@@ -74,7 +88,7 @@ export class DockerImageDeployment extends Construct {
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()),
       },
       policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE,
+        resources: [this.cb.projectArn]
       }),
     });
   }

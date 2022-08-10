@@ -4,6 +4,8 @@
 
 ### DockerImageDeployment <a name="DockerImageDeployment" id="cdk-docker-image-deployment.DockerImageDeployment"></a>
 
+`DockerImageDeployment` pushes an image from a local or external source to a specified external destination.
+
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.DockerImageDeployment.Initializer"></a>
 
 ```typescript
@@ -148,51 +150,6 @@ Defaults to the tag of the source if not provided.
 
 ---
 
-### DestinationProps <a name="DestinationProps" id="cdk-docker-image-deployment.DestinationProps"></a>
-
-#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.DestinationProps.Initializer"></a>
-
-```typescript
-import { DestinationProps } from 'cdk-docker-image-deployment'
-
-const destinationProps: DestinationProps = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.DestinationProps.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_ecr.IRepository</code> | The destination repository to deploy to. |
-| <code><a href="#cdk-docker-image-deployment.DestinationProps.property.tag">tag</a></code> | <code>string</code> | The tag of the deployed image. |
-
----
-
-##### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.DestinationProps.property.repository"></a>
-
-```typescript
-public readonly repository: IRepository;
-```
-
-- *Type:* aws-cdk-lib.aws_ecr.IRepository
-
-The destination repository to deploy to.
-
----
-
-##### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.DestinationProps.property.tag"></a>
-
-```typescript
-public readonly tag: string;
-```
-
-- *Type:* string
-
-The tag of the deployed image.
-
-Defaults to the tag of the source if not provided.
-
----
-
 ### DockerImageDeploymentProps <a name="DockerImageDeploymentProps" id="cdk-docker-image-deployment.DockerImageDeploymentProps"></a>
 
 #### Initializer <a name="Initializer" id="cdk-docker-image-deployment.DockerImageDeploymentProps.Initializer"></a>
@@ -208,7 +165,7 @@ const dockerImageDeploymentProps: DockerImageDeploymentProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.destination">destination</a></code> | <code><a href="#cdk-docker-image-deployment.Destination">Destination</a></code> | Destination repository to deploy the image to. |
-| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.source">source</a></code> | <code><a href="#cdk-docker-image-deployment.Source">Source</a></code> | Source of image to deploy. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.source">source</a></code> | <code><a href="#cdk-docker-image-deployment.Source">Source</a></code> | Source of the image to deploy. |
 
 ---
 
@@ -232,7 +189,7 @@ public readonly source: Source;
 
 - *Type:* <a href="#cdk-docker-image-deployment.Source">Source</a>
 
-Source of image to deploy.
+Source of the image to deploy.
 
 ---
 
@@ -315,12 +272,50 @@ The role for the handler.
 
 ### Destination <a name="Destination" id="cdk-docker-image-deployment.Destination"></a>
 
+Specifies docker image deployment destination.
+
+Usage:
+
+  Destination.ecr(repository, 'tag')
+
+#### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Destination.Initializer"></a>
+
+```typescript
+import { Destination } from 'cdk-docker-image-deployment'
+
+new Destination()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.Destination.grantPermissions">grantPermissions</a></code> | *No description.* |
+
+---
+
+##### `grantPermissions` <a name="grantPermissions" id="cdk-docker-image-deployment.Destination.grantPermissions"></a>
+
+```typescript
+public grantPermissions(role: IGrantable): void
+```
+
+###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.Destination.grantPermissions.parameter.role"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IGrantable
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.ecr">ecr</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Destination.ecr">ecr</a></code> | Uses an ECR repository as the destination for the image. |
 
 ---
 
@@ -331,6 +326,8 @@ import { Destination } from 'cdk-docker-image-deployment'
 
 Destination.ecr(repository: IRepository, tag?: string)
 ```
+
+Uses an ECR repository as the destination for the image.
 
 ###### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.Destination.ecr.parameter.repository"></a>
 
@@ -349,7 +346,6 @@ Destination.ecr(repository: IRepository, tag?: string)
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.Destination.property.config">config</a></code> | <code><a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a></code> | *No description.* |
-| <code><a href="#cdk-docker-image-deployment.Destination.property.repository">repository</a></code> | <code>aws-cdk-lib.aws_ecr.IRepository</code> | *No description.* |
 
 ---
 
@@ -363,18 +359,10 @@ public readonly config: DestinationConfig;
 
 ---
 
-##### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.Destination.property.repository"></a>
-
-```typescript
-public readonly repository: IRepository;
-```
-
-- *Type:* aws-cdk-lib.aws_ecr.IRepository
-
----
-
 
 ### DirectorySource <a name="DirectorySource" id="cdk-docker-image-deployment.DirectorySource"></a>
+
+Source of docker image deployment is a local image from a directory.
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.DirectorySource.Initializer"></a>
 
@@ -426,7 +414,7 @@ public bind(scope: Construct, context?: SourceContext): SourceConfig
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.DirectorySource.directory">directory</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.DirectorySource.directory">directory</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
 
 ---
 
@@ -438,6 +426,8 @@ import { DirectorySource } from 'cdk-docker-image-deployment'
 DirectorySource.directory(path: string)
 ```
 
+Uses a local image built from a Dockerfile in a local directory as the source.
+
 ###### `path`<sup>Required</sup> <a name="path" id="cdk-docker-image-deployment.DirectorySource.directory.parameter.path"></a>
 
 - *Type:* string
@@ -446,7 +436,113 @@ DirectorySource.directory(path: string)
 
 
 
+### EcrDestination <a name="EcrDestination" id="cdk-docker-image-deployment.EcrDestination"></a>
+
+Destination of docker image deployment is an ECR repository.
+
+#### Initializers <a name="Initializers" id="cdk-docker-image-deployment.EcrDestination.Initializer"></a>
+
+```typescript
+import { EcrDestination } from 'cdk-docker-image-deployment'
+
+new EcrDestination(repository: IRepository, tag?: string)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.EcrDestination.Initializer.parameter.repository">repository</a></code> | <code>aws-cdk-lib.aws_ecr.IRepository</code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.EcrDestination.Initializer.parameter.tag">tag</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.EcrDestination.Initializer.parameter.repository"></a>
+
+- *Type:* aws-cdk-lib.aws_ecr.IRepository
+
+---
+
+##### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.EcrDestination.Initializer.parameter.tag"></a>
+
+- *Type:* string
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.EcrDestination.grantPermissions">grantPermissions</a></code> | *No description.* |
+
+---
+
+##### `grantPermissions` <a name="grantPermissions" id="cdk-docker-image-deployment.EcrDestination.grantPermissions"></a>
+
+```typescript
+public grantPermissions(role: IGrantable): void
+```
+
+###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.EcrDestination.grantPermissions.parameter.role"></a>
+
+- *Type:* aws-cdk-lib.aws_iam.IGrantable
+
+---
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-docker-image-deployment.EcrDestination.ecr">ecr</a></code> | Uses an ECR repository as the destination for the image. |
+
+---
+
+##### `ecr` <a name="ecr" id="cdk-docker-image-deployment.EcrDestination.ecr"></a>
+
+```typescript
+import { EcrDestination } from 'cdk-docker-image-deployment'
+
+EcrDestination.ecr(repository: IRepository, tag?: string)
+```
+
+Uses an ECR repository as the destination for the image.
+
+###### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.EcrDestination.ecr.parameter.repository"></a>
+
+- *Type:* aws-cdk-lib.aws_ecr.IRepository
+
+---
+
+###### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.EcrDestination.ecr.parameter.tag"></a>
+
+- *Type:* string
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.EcrDestination.property.config">config</a></code> | <code><a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a></code> | *No description.* |
+
+---
+
+##### `config`<sup>Required</sup> <a name="config" id="cdk-docker-image-deployment.EcrDestination.property.config"></a>
+
+```typescript
+public readonly config: DestinationConfig;
+```
+
+- *Type:* <a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a>
+
+---
+
+
 ### Source <a name="Source" id="cdk-docker-image-deployment.Source"></a>
+
+Specifies docker image deployment source.
+
+Usage:
+
+  Source.directory('path/to/directory')
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Source.Initializer"></a>
 
@@ -491,7 +587,7 @@ public bind(scope: Construct, context?: SourceContext): SourceConfig
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Source.directory">directory</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Source.directory">directory</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
 
 ---
 
@@ -502,6 +598,8 @@ import { Source } from 'cdk-docker-image-deployment'
 
 Source.directory(path: string)
 ```
+
+Uses a local image built from a Dockerfile in a local directory as the source.
 
 ###### `path`<sup>Required</sup> <a name="path" id="cdk-docker-image-deployment.Source.directory.parameter.path"></a>
 
