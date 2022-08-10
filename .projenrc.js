@@ -8,7 +8,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'git@github.com:scanlonp/cdk-docker-image-deployment.git',
   autoApproveUpgrades: true,
   autoApproveOptions: {},
-  gitignore: ['/cdk.out', 'package-lock.json'],
+  gitignore: ['/cdk.out', 'package-lock.json', 'hello.test.ts'],
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */

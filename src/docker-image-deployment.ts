@@ -31,9 +31,8 @@ export class DockerImageDeployment extends Construct {
       assumedBy: new iam.ServicePrincipal('codebuild.amazonaws.com'),
     });
 
-    props.destination.grantPermissions(handlerRole);
-
     const sourceConfig = props.source.bind(this, { handlerRole });
+    props.destination.grantPermissions(handlerRole);
 
     const sourceUri: string = sourceConfig.imageUri;
 
