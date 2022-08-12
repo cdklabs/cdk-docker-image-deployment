@@ -11,7 +11,9 @@ const repo = new ecr.Repository(stack, 'MyRepository');
 
 const dockerimagedeploy = new imagedeploy.DockerImageDeployment(stack, 'MyDockerImageDeploy', {
   source: imagedeploy.Source.directory(path.join(__dirname, '../assets')),
-  destination: imagedeploy.Destination.ecr(repo, 'mytag'),
+  destination: imagedeploy.Destination.ecr(repo, {
+    tag: 'mytag',
+  }),
 });
 
 app.synth();
