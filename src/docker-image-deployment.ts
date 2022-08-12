@@ -34,24 +34,21 @@ export class DockerImageDeployment extends Construct {
     const sourceConfig = props.source.bind(this, { handlerRole });
     props.destination.grantPermissions(handlerRole);
 
-    const sourceUri: string = sourceConfig.imageUri;
+    const sourceUri = sourceConfig.imageUri;
 
-    const destTag: string = props.destination.config.destinationTag ?? sourceConfig.imageTag;
-    const destUri: string = `${props.destination.config.destinationUri}:${destTag}`;
+    const destTag = props.destination.config.destinationTag ?? sourceConfig.imageTag;
+    const destUri = `${props.destination.config.destinationUri}:${destTag}`;
 
-    const accountId: string = Stack.of(this).account;
-    const region: string = Stack.of(this).region;
+    const accountId = Stack.of(this).account;
+    const region = Stack.of(this).region;
 
     const sourceLoginCommands = [
       `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${region}.amazonaws.com`,
     ];
 
-    const getImageCommands = [
+    const buildCommands = [
       `docker pull ${sourceUri}`,
       `docker tag ${sourceUri} ${destUri}`,
-    ];
-
-    const pushImageCommands = [
       `docker push ${destUri}`,
     ];
 
@@ -63,10 +60,7 @@ export class DockerImageDeployment extends Construct {
             commands: sourceLoginCommands,
           },
           build: {
-            commands: getImageCommands,
-          },
-          post_build: {
-            commands: pushImageCommands,
+            commands: buildCommands,
           },
         },
       }),
@@ -77,7 +71,7 @@ export class DockerImageDeployment extends Construct {
       role: handlerRole,
     });
 
-    new cr.AwsCustomResource(this, 'DockerImageDeployCustomeResource', {
+    const customResource = new cr.AwsCustomResource(this, 'DockerImageDeployCustomeResource', {
       onUpdate: {
         service: 'CodeBuild',
         action: 'startBuild',
@@ -90,5 +84,7 @@ export class DockerImageDeployment extends Construct {
         resources: [this.cb.projectArn],
       }),
     });
+
+    customResource.node.addDependency(handlerRole);
   }
 }

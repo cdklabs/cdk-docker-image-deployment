@@ -1,7 +1,12 @@
+//import * as fs from 'fs';
+//import * as path from 'path';
 import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 
+/**
+ * Source information
+ */
 export interface SourceConfig {
   /**
    * The source image URI.
@@ -29,7 +34,9 @@ export interface SourceContext {
  *
  * Usage:
  *
+ *  ```
  *  Source.directory('path/to/directory')
+ *  ```
  *
  */
 export abstract class Source {
@@ -38,7 +45,7 @@ export abstract class Source {
    *
    * @param path
    */
-  public static directory(path: string): DirectorySource {
+  public static directory(path: string): Source {
     return new DirectorySource(path);
   }
 
@@ -48,7 +55,7 @@ export abstract class Source {
 /**
  * Source of docker image deployment is a local image from a directory
  */
-export class DirectorySource extends Source {
+class DirectorySource extends Source {
   private path: string;
 
   constructor(path: string) {
@@ -69,8 +76,6 @@ export class DirectorySource extends Source {
     const asset = new ecr_assets.DockerImageAsset(scope, `Asset${id}`, {
       directory: this.path,
     });
-
-    // validation for directory vs file
 
     asset.repository.grantPull(context.handlerRole);
 
