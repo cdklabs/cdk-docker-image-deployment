@@ -13,8 +13,10 @@ export class DockerImageDeploymentStack extends Stack {
     });
 
     new imagedeploy.DockerImageDeployment(this, 'imagedeploywithtag', {
-      source: imagedeploy.Source.directory(path.join(__dirname, '../../src/assets')),
-      destination: imagedeploy.Destination.ecr(repo, 'newtag2'),
+      source: imagedeploy.Source.directory(path.join(__dirname, '../../src/assets/Dockerfile')),
+      destination: imagedeploy.Destination.ecr(repo, {
+        tag: 'newtag2',
+      }),
     });
   }
 }
