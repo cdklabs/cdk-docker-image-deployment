@@ -274,7 +274,7 @@ The source image URI.
 
 ### SourceContext <a name="SourceContext" id="cdk-docker-image-deployment.SourceContext"></a>
 
-Bind context for ISources.
+Bind context for Source.
 
 #### Initializer <a name="Initializer" id="cdk-docker-image-deployment.SourceContext.Initializer"></a>
 
@@ -312,7 +312,7 @@ Specifies docker image deployment destination.
 
 Usage:
 
-  ```
+  ```ts
   Destination.ecr(repository, 'tag')
   ```
 
@@ -333,17 +333,17 @@ new Destination()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.grantPermissions">grantPermissions</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Destination.bind">bind</a></code> | *No description.* |
 
 ---
 
-##### `grantPermissions` <a name="grantPermissions" id="cdk-docker-image-deployment.Destination.grantPermissions"></a>
+##### `bind` <a name="bind" id="cdk-docker-image-deployment.Destination.bind"></a>
 
 ```typescript
-public grantPermissions(role: IGrantable): void
+public bind(role: IGrantable): void
 ```
 
-###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.Destination.grantPermissions.parameter.role"></a>
+###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.Destination.bind.parameter.role"></a>
 
 - *Type:* aws-cdk-lib.aws_iam.IGrantable
 
@@ -404,7 +404,7 @@ Specifies docker image deployment source.
 
 Usage:
 
-  ```
+  ```ts
   Source.directory('path/to/directory')
   ```
 
@@ -432,7 +432,7 @@ new Source()
 ##### `bind` <a name="bind" id="cdk-docker-image-deployment.Source.bind"></a>
 
 ```typescript
-public bind(scope: Construct, context?: SourceContext): SourceConfig
+public bind(scope: Construct, context: SourceContext): SourceConfig
 ```
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.Source.bind.parameter.scope"></a>
@@ -441,7 +441,7 @@ public bind(scope: Construct, context?: SourceContext): SourceConfig
 
 ---
 
-###### `context`<sup>Optional</sup> <a name="context" id="cdk-docker-image-deployment.Source.bind.parameter.context"></a>
+###### `context`<sup>Required</sup> <a name="context" id="cdk-docker-image-deployment.Source.bind.parameter.context"></a>
 
 - *Type:* <a href="#cdk-docker-image-deployment.SourceContext">SourceContext</a>
 

@@ -33,7 +33,7 @@ export interface EcrOptions {
  *
  * Usage:
  *
- *  ```
+ *  ```ts
  *  Destination.ecr(repository, 'tag')
  *  ```
  *
@@ -60,7 +60,7 @@ export abstract class Destination {
     }
   }
 
-  public abstract grantPermissions(role: iam.IGrantable): void;
+  public abstract bind(role: iam.IGrantable): void;
 }
 
 /**
@@ -85,7 +85,7 @@ class EcrDestination extends Destination {
     };
   }
 
-  public grantPermissions(role: iam.IGrantable): void {
+  public bind(role: iam.IGrantable): void {
     this.repository.grantPullPush(role);
   }
 }

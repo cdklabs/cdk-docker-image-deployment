@@ -20,7 +20,7 @@ export interface SourceConfig {
 }
 
 /**
- * Bind context for ISources
+ * Bind context for Source
  */
 export interface SourceContext {
   /**
@@ -34,7 +34,7 @@ export interface SourceContext {
  *
  * Usage:
  *
- *  ```
+ *  ```ts
  *  Source.directory('path/to/directory')
  *  ```
  *
@@ -49,7 +49,7 @@ export abstract class Source {
     return new DirectorySource(path);
   }
 
-  public abstract bind(scope: Construct, context?: SourceContext): SourceConfig;
+  public abstract bind(scope: Construct, context: SourceContext): SourceConfig;
 }
 
 /**
@@ -63,11 +63,7 @@ class DirectorySource extends Source {
     this.path = path;
   }
 
-  public bind(scope: Construct, context?: SourceContext): SourceConfig {
-    if (!context) {
-      throw new Error('To use a Source.directory(), context must be provided');
-    }
-
+  public bind(scope: Construct, context: SourceContext): SourceConfig {
     let id = 1;
     while (scope.node.tryFindChild(`Assets${id}`)) {
       id += 1;

@@ -231,7 +231,7 @@ describe('DockerImageDeploy', () => {
                   { Ref: 'AWS::URLSuffix' },
                   '/',
                   { Ref: 'TestRepositoryC0DA8195' },
-                  Match.stringLikeRegexp(':testtag",(.)*'),
+                  Match.stringLikeRegexp('^:testtag",(.)*'),
                 ]),
               ]),
             },
@@ -274,7 +274,7 @@ describe('DockerImageDeploy', () => {
                   { Ref: 'AWS::URLSuffix' },
                   '/',
                   { Ref: 'TestRepositoryC0DA8195' },
-                  Match.stringLikeRegexp(':testtag",(.)*'),
+                  Match.stringLikeRegexp('^:testtag",(.)*'),
                 ]),
               ]),
             },
@@ -282,12 +282,6 @@ describe('DockerImageDeploy', () => {
         });
       });
 
-    });
-
-    test('bind with no context fails', () => {
-      expect(() => {
-        testSource.bind(stack);
-      }).toThrow('To use a Source.directory(), context must be provided');
     });
 
     test('ECR login and pull commands are well formatted', () => {

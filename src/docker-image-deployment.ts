@@ -32,9 +32,11 @@ export class DockerImageDeployment extends Construct {
     });
 
     const sourceConfig = props.source.bind(this, { handlerRole });
-    props.destination.grantPermissions(handlerRole);
+    props.destination.bind(handlerRole);
 
     const sourceUri = sourceConfig.imageUri;
+
+    console.log(sourceConfig.imageTag);
 
     const destTag = props.destination.config.destinationTag ?? sourceConfig.imageTag;
     const destUri = `${props.destination.config.destinationUri}:${destTag}`;

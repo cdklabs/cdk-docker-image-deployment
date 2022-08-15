@@ -1,6 +1,10 @@
 {
   "dependencies": [
     {
+      "name": "@aws-cdk/integ-tests-alpha",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "version": "^27",
       "type": "build"
@@ -22,7 +26,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.37.0",
+      "version": "2.37.1",
       "type": "build"
     },
     {
@@ -102,7 +106,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.37.0",
+      "version": "^2.37.1",
       "type": "peer"
     },
     {
