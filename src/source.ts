@@ -1,5 +1,6 @@
 //import * as fs from 'fs';
 //import * as path from 'path';
+import { Fn } from 'aws-cdk-lib';
 import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -77,7 +78,8 @@ class DirectorySource extends Source {
 
     return {
       imageUri: asset.imageUri,
-      imageTag: asset.assetHash,
+      imageTag: Fn.select(1, Fn.split(':', asset.imageUri)),
+      //asset.assetHash,
     };
   }
 }

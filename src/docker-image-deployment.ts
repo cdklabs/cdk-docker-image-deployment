@@ -2,6 +2,7 @@ import { Stack } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cr from 'aws-cdk-lib/custom-resources';
+//import * as lambda from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { Destination } from './destination';
 import { Source } from './source';
@@ -35,8 +36,6 @@ export class DockerImageDeployment extends Construct {
     props.destination.bind(handlerRole);
 
     const sourceUri = sourceConfig.imageUri;
-
-    console.log(sourceConfig.imageTag);
 
     const destTag = props.destination.config.destinationTag ?? sourceConfig.imageTag;
     const destUri = `${props.destination.config.destinationUri}:${destTag}`;
