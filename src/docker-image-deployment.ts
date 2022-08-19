@@ -1,5 +1,4 @@
 import { Stack, CustomResource, Duration } from 'aws-cdk-lib';
-//import { CustomResource } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -74,22 +73,6 @@ export class DockerImageDeployment extends Construct {
       role: handlerRole,
     });
 
-    /*
-    const customResource = new cr.AwsCustomResource(this, 'DockerImageDeployCustomeResource', {
-      onUpdate: {
-        service: 'CodeBuild',
-        action: 'startBuild',
-        parameters: {
-          projectName: this.cb.projectName,
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()),
-      },
-      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cb.projectArn],
-      }),
-    });
-    */
-
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
       entry: 'lib/codebuild-handler/index.js',
       handler: 'onEventhandler',
@@ -128,14 +111,13 @@ export class DockerImageDeployment extends Construct {
       totalTimeout: Duration.minutes(10),
     });
 
-    const custres = new CustomResource(this, `CustomResource${Date.now().toString()}`, {
+    const customResource = new CustomResource(this, `CustomResource${Date.now().toString()}`, {
       serviceToken: crProvider.serviceToken,
       properties: {
         projectName: this.cb.projectName,
       },
     });
 
-    //customResource.node.addDependency(handlerRole);
-    custres.node.addDependency(handlerRole);
+    customResource.node.addDependency(handlerRole);
   }
 }

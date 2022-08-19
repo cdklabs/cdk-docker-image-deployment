@@ -1,94 +1,71 @@
 import * as AWSLambda from 'aws-lambda';
 import * as AWS from 'aws-sdk';
-//import * as cr from 'aws-cdk-lib/custom-resources';
-//import * as codebuild from 'aws-codebuild';
-
 
 const cb = new AWS.CodeBuild();
 
 export async function onEventhandler(event: AWSLambda.CloudFormationCustomResourceEvent) {
-  console.log('in handler function');
-  console.log(`event.RequestType: ${event.RequestType}`);
   switch (event.RequestType) {
     case 'Create':
     case 'Update':
-      console.log(`case: ${event.RequestType}`);
       return startBuild(event);
     case 'Delete':
-      console.log('delete case');
       return;
   }
 }
 
 export async function startBuild(event: AWSLambda.CloudFormationCustomResourceEvent) {
+  const projectName = event.ResourceProperties.projectName;
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
-    console.log('in startBuild function');
-    console.log(`see what this variable is event.ResourceProperties.projectName: ${event.ResourceProperties.projectName}`);
     await cb.startBuild({
-      projectName: event.ResourceProperties.projectName,
-    }, function(err, data) {
-      if (err) {
-        console.log(err, err.stack); // an error occurred
-      } else {
-        console.log(data); // successful response);
-      }
-    //const projectName = event.ResourceProperties['projectName'];
+      projectName: projectName,
     }).promise();
-    //console.log('after startBuild');
-    //console.log(`result: ${result}`);
   }
 }
 
 export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomResourceEvent) {
-  //const physicalId = event.LogicalResourceId;
-  //const requestType = event.RequestType;
   const projectName = event.ResourceProperties.projectName;
   const buildIds = await cb.listBuildsForProject({
     projectName: projectName,
     sortOrder: 'DESCENDING',
   }).promise();
 
-  console.log(`buildIds: ${buildIds}`);
-
-  if (buildIds.ids !== undefined) {
-    const buildId = buildIds.ids.slice(0, 1);
-
-    console.log(`buildId: ${buildId}`);
+  // there should always be a buildId since this function runs after onEventHandler starts the build
+  if (buildIds.ids) {
+    const buildId = buildIds.ids.slice(0, 1); // most recent build from the project stared by onEventHandler
 
     const build = await cb.batchGetBuilds({
       ids: buildId,
     }).promise();
 
-    console.log(`build: ${build}`);
-
-    if (build.builds !== undefined) {
+    // we should always have a build since we have a valid buildId
+    if (build.builds && build.builds.length > 0) {
       const currentPhase = build.builds[0].currentPhase;
       const buildStatus = build.builds[0].buildStatus;
 
-      console.log(`currentPhase: ${currentPhase}`);
-      console.log(`buildStatus: ${buildStatus}`);
-
       if (currentPhase === 'COMPLETED' && buildStatus === 'SUCCEEDED') {
-        // do good thing
-        console.log('good thing');
         return {
           IsComplete: true,
-          Data: '{ "test": "here" }',
+          Data: { status: 'succeeded' },
+        };
+      } else if (currentPhase === 'COMPLETED' && buildStatus === 'FAILED') {
+        return {
+          IsComplete: true,
+          Data: { status: 'failed' },
         };
       } else {
-        // do bad thing
-        console.log('bad thing');
+        // not finished
         return { IsComplete: false };
       }
     } else {
-      console.log('builds undefined');
-      return { IsComplete: false };
+      return {
+        IsComplete: true,
+        Data : 'builds undefined',
+      };
     }
   } else {
-    console.log('buildId undefined');
-    return { IsComplete: false };
+    return { 
+      IsComplete: false,
+      Data : 'buildId undefined',
+    };
   }
-
-
 }
-
