@@ -59,13 +59,13 @@ export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomRes
     } else {
       return {
         IsComplete: true,
-        Data : 'builds undefined',
+        Data: 'builds undefined',
       };
     }
   } else {
-    return { 
+    return {
       IsComplete: false,
-      Data : 'buildId undefined',
+      Data: 'buildId undefined',
     };
   }
 }
