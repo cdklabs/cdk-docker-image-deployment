@@ -76,14 +76,14 @@ export class DockerImageDeployment extends Construct {
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
       entry: 'lib/codebuild-handler/index.js',
       handler: 'onEventhandler',
-      depsLockFilePath: '../package-lock.json',
+      depsLockFilePath: 'yarn.lock',
       runtime: Runtime.NODEJS_16_X,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
       entry: 'lib/codebuild-handler/index.js',
       handler: 'isCompleteHandler',
-      depsLockFilePath: '../package-lock.json',
+      depsLockFilePath: 'yarn.lock',
       runtime: Runtime.NODEJS_16_X,
     });
 
