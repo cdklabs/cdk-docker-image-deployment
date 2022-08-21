@@ -9,9 +9,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   autoApproveUpgrades: true,
   autoApproveOptions: {},
   gitignore: ['/cdk.out', 'package-lock.json', 'hello.test.ts'],
-  // deps: [],                /* Runtime dependencies of this module. */
+  //deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: ['@aws-cdk/integ-tests-alpha'], /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
+  bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
 });
 project.synth();

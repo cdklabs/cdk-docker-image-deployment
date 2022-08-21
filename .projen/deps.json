@@ -105,6 +105,14 @@
       "type": "build"
     },
     {
+      "name": "@types/aws-lambda",
+      "type": "bundled"
+    },
+    {
+      "name": "aws-sdk",
+      "type": "bundled"
+    },
+    {
       "name": "aws-cdk-lib",
       "version": "^2.37.1",
       "type": "peer"

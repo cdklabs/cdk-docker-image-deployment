@@ -63,6 +63,14 @@
     "aws-cdk-lib": "^2.37.1",
     "constructs": "^10.0.5"
   },
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.102",
+    "aws-sdk": "^2.1196.0"
+  },
+  "bundledDependencies": [
+    "@types/aws-lambda",
+    "aws-sdk"
+  ],
   "keywords": [
     "cdk"
   ],

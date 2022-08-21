@@ -1,8 +1,9 @@
-import { Stack } from 'aws-cdk-lib';
+import { Stack, CustomResource, Duration } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as cr from 'aws-cdk-lib/custom-resources';
-//import * as lambda from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import { Destination } from './destination';
 import { Source } from './source';
@@ -72,18 +73,49 @@ export class DockerImageDeployment extends Construct {
       role: handlerRole,
     });
 
-    const customResource = new cr.AwsCustomResource(this, 'DockerImageDeployCustomeResource', {
-      onUpdate: {
-        service: 'CodeBuild',
-        action: 'startBuild',
-        parameters: {
-          projectName: this.cb.projectName,
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString()),
+    const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
+      entry: 'lib/codebuild-handler/index.js',
+      handler: 'onEventhandler',
+      depsLockFilePath: 'yarn.lock',
+      runtime: Runtime.NODEJS_16_X,
+    });
+
+    const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
+      entry: 'lib/codebuild-handler/index.js',
+      handler: 'isCompleteHandler',
+      depsLockFilePath: 'yarn.lock',
+      runtime: Runtime.NODEJS_16_X,
+    });
+
+    iam.Grant.addToPrincipal({
+      grantee: onEventHandler,
+      actions: ['codebuild:StartBuild'],
+      resourceArns: [this.cb.projectArn],
+      scope: this,
+    });
+
+    iam.Grant.addToPrincipal({
+      grantee: isCompleteHandler,
+      actions: [
+        'codebuild:ListBuildsForProject',
+        'codebuild:BatchGetBuilds',
+      ],
+      resourceArns: [this.cb.projectArn],
+      scope: this,
+    });
+
+    const crProvider = new cr.Provider(this, 'CRProvider', {
+      onEventHandler: onEventHandler,
+      isCompleteHandler: isCompleteHandler,
+      queryInterval: Duration.seconds(30),
+      totalTimeout: Duration.minutes(10),
+    });
+
+    const customResource = new CustomResource(this, `CustomResource${Date.now().toString()}`, {
+      serviceToken: crProvider.serviceToken,
+      properties: {
+        projectName: this.cb.projectName,
       },
-      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [this.cb.projectArn],
-      }),
     });
 
     customResource.node.addDependency(handlerRole);
