@@ -56,7 +56,7 @@ export abstract class Source {
 /**
  * Source of docker image deployment is a local image from a directory
  */
- class DirectorySource extends Source {
+class DirectorySource extends Source {
   private path: string;
 
   constructor(path: string) {
@@ -75,7 +75,7 @@ export abstract class Source {
     return {
       imageUri: asset.imageUri,
       imageTag: Fn.select(1, Fn.split(':', asset.imageUri)),
-      //asset.assetHash,
+      //imageTag: asset.imageTag
     };
   }
 }

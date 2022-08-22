@@ -1,17 +1,16 @@
 // imports
 import * as path from 'path';
-//import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-//import * as cxapi from 'aws-cdk-lib/cx-api';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../src';
 
 describe('DockerImageDeploy', () => {
+  // GIVEN
+  const stack = new cdk.Stack();
   describe('Source: directory', () => {
     // GIVEN
-    const stack = new cdk.Stack();
-    const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets'));
+    const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
 
     describe('Destination: ecr', () => {
       // GIVEN
@@ -48,6 +47,42 @@ describe('DockerImageDeploy', () => {
                 ],
                 Effect: 'Allow',
                 Resource: {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'arn:',
+                      {
+                        Ref: 'AWS::Partition',
+                      },
+                      ':ecr:',
+                      {
+                        Ref: 'AWS::Region',
+                      },
+                      ':',
+                      {
+                        Ref: 'AWS::AccountId',
+                      },
+                      ':repository/',
+                      {
+                        'Fn::Sub': 'cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}',
+                      },
+                    ],
+                  ],
+                },
+              },
+              {
+                Action: 'ecr:GetAuthorizationToken',
+                Effect: 'Allow',
+                Resource: '*',
+              },
+              {
+                Action: [
+                  'ecr:BatchCheckLayerAvailability',
+                  'ecr:GetDownloadUrlForLayer',
+                  'ecr:BatchGetImage',
+                ],
+                Effect: 'Allow',
+                Resource: {
                   'Fn::GetAtt': [
                     'TestRepositoryC0DA8195',
                     'Arn',
@@ -69,13 +104,103 @@ describe('DockerImageDeploy', () => {
                   ],
                 },
               },
+              {
+                Action: [
+                  'logs:CreateLogGroup',
+                  'logs:CreateLogStream',
+                  'logs:PutLogEvents',
+                ],
+                Effect: 'Allow',
+                Resource: [
+                  {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':logs:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':log-group:/aws/codebuild/',
+                        {
+                          Ref: 'TestDeploymentDockerImageDeployProject0884B3B5',
+                        },
+                      ],
+                    ],
+                  },
+                  {
+                    'Fn::Join': [
+                      '',
+                      [
+                        'arn:',
+                        {
+                          Ref: 'AWS::Partition',
+                        },
+                        ':logs:',
+                        {
+                          Ref: 'AWS::Region',
+                        },
+                        ':',
+                        {
+                          Ref: 'AWS::AccountId',
+                        },
+                        ':log-group:/aws/codebuild/',
+                        {
+                          Ref: 'TestDeploymentDockerImageDeployProject0884B3B5',
+                        },
+                        ':*',
+                      ],
+                    ],
+                  },
+                ],
+              },
+              {
+                Action: [
+                  'codebuild:CreateReportGroup',
+                  'codebuild:CreateReport',
+                  'codebuild:UpdateReport',
+                  'codebuild:BatchPutTestCases',
+                  'codebuild:BatchPutCodeCoverages',
+                ],
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'arn:',
+                      {
+                        Ref: 'AWS::Partition',
+                      },
+                      ':codebuild:',
+                      {
+                        Ref: 'AWS::Region',
+                      },
+                      ':',
+                      {
+                        Ref: 'AWS::AccountId',
+                      },
+                      ':report-group/',
+                      {
+                        Ref: 'TestDeploymentDockerImageDeployProject0884B3B5',
+                      },
+                      '-*',
+                    ],
+                  ],
+                },
+              },
             ]),
           },
         });
       });
 
       test('docker tag command is well formatted: tag provided', () => {
-        //console.log(JSON.stringify(Template.fromStack(stack).findResources('AWS::CodeBuild::Project'), null, 4));
         Template.fromStack(stack).hasResourceProperties('AWS::CodeBuild::Project', {
           Source: {
             BuildSpec: {
@@ -118,7 +243,6 @@ describe('DockerImageDeploy', () => {
       });
 
       test('docker tag command is well formatted: no tag provided', () => {
-        //console.log(JSON.stringify(Template.fromStack(stack).findResources('AWS::CodeBuild::Project'), null, 4));
         Template.fromStack(stack).hasResourceProperties('AWS::CodeBuild::Project', {
           Source: {
             BuildSpec: {
@@ -152,7 +276,7 @@ describe('DockerImageDeploy', () => {
                   { Ref: 'AWS::URLSuffix' },
                   '/',
                   { Ref: 'TestRepositoryC0DA8195' },
-                  Match.stringLikeRegexp('^:70d1a3115d17d2ad7210b272e45b7398a7661e7b0cf24b52e059ae3f1fa8f2c1",(.)*'),
+                  // need no-tag validation here, will be better once cdk 2.38.1 is recognized
                 ]),
               ]),
             },
@@ -163,7 +287,6 @@ describe('DockerImageDeploy', () => {
     });
 
     test('ECR login and pull commands are well formatted', () => {
-      //console.log(JSON.stringify(Template.fromStack(stack).findResources('AWS::CodeBuild::Project'), null, 4));
       Template.fromStack(stack).hasResourceProperties('AWS::CodeBuild::Project', {
         Source: {
           BuildSpec: {
@@ -180,6 +303,49 @@ describe('DockerImageDeploy', () => {
               ]),
             ]),
           },
+        },
+      });
+    });
+  });
+
+  describe('Custom Resrouces', () => {
+    test('onEventHandler has correct permissions', () => {
+      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+        PolicyDocument: {
+          Statement: Match.arrayWith([
+            {
+              Action: 'codebuild:StartBuild',
+              Effect: 'Allow',
+              Resource: {
+                'Fn::GetAtt': [
+                  'TestDeploymentDockerImageDeployProject0884B3B5',
+                  'Arn',
+                ],
+              },
+            },
+          ]),
+        },
+      });
+    });
+
+    test('isCompleteHandler has correct permissions', () => {
+      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+        PolicyDocument: {
+          Statement: Match.arrayWith([
+            {
+              Action: [
+                'codebuild:ListBuildsForProject',
+                'codebuild:BatchGetBuilds',
+              ],
+              Effect: 'Allow',
+              Resource: {
+                'Fn::GetAtt': [
+                  'TestDeploymentDockerImageDeployProject0884B3B5',
+                  'Arn',
+                ],
+              },
+            },
+          ]),
         },
       });
     });
