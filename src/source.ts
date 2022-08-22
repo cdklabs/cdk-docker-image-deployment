@@ -1,6 +1,7 @@
 //import * as fs from 'fs';
 //import * as path from 'path';
 import { Fn } from 'aws-cdk-lib';
+import * as ecr from 'aws-cdk-lib/aws-ecr';
 import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -50,6 +51,13 @@ export abstract class Source {
     return new DirectorySource(path);
   }
 
+  public static ecr(repository: ecr.IRepository, tag: string): Source {
+    return new EcrSource(repository, tag);
+  }
+
+  public static asset(asset: ecr_assets.DockerImageAsset): Source { // | ecr_assets.TarballImageAsset): Source {
+    return new AssetSource(asset);
+  }
   public abstract bind(scope: Construct, context: SourceContext): SourceConfig;
 }
 
@@ -81,25 +89,43 @@ class DirectorySource extends Source {
 }
 
 class EcrSource extends Source {
-  private path: string;
+  private repository: ecr.IRepository;
+  private tag: string;
 
-  constructor(path: string) {
+  constructor(repository: ecr.IRepository, tag: string) {
     super();
-    this.path = path;
+    this.repository = repository;
+    this.tag = tag;
   }
 
-  public bind(scope: Construct, context: SourceContext): SourceConfig {
+  public bind(_scope: Construct, context: SourceContext): SourceConfig {
 
-    const asset = new ecr_assets.DockerImageAsset(scope, 'asset', {
-      directory: this.path,
-    });
-
-    asset.repository.grantPull(context.handlerRole);
+    this.repository.grantPull(context.handlerRole);
 
     return {
-      imageUri: asset.imageUri,
-      imageTag: Fn.select(1, Fn.split(':', asset.imageUri)),
-      //imageTag: asset.imageTag
+      imageUri: this.repository.repositoryUriForTag(this.tag),
+      imageTag: this.tag,
+    };
+  }
+}
+
+class AssetSource extends Source {
+  private repository: ecr.IRepository;
+  private tag: string;
+
+  constructor(asset: ecr_assets.DockerImageAsset) {
+    super();
+    this.repository = asset.repository;
+    this.tag = Fn.select(1, Fn.split(':', asset.imageUri));
+  }
+
+  public bind(_scope: Construct, context: SourceContext): SourceConfig {
+
+    this.repository.grantPull(context.handlerRole);
+
+    return {
+      imageUri: this.repository.repositoryUriForTag(this.tag),
+      imageTag: this.tag,
     };
   }
 }

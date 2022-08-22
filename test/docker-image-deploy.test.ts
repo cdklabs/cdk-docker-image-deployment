@@ -2,6 +2,7 @@
 import * as path from 'path';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
+import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../src';
 
@@ -309,8 +310,46 @@ describe('DockerImageDeploy', () => {
   });
 
   describe('Source: ecr', () => {
-    
-    const testSource = imagedeploy.Source.ecr()
+    // GIVEN
+    const sourceRepo = ecr.Repository.fromRepositoryName(stack, 'TestRepo', 'testrepo');
+    const ecrSource = imagedeploy.Source.ecr(sourceRepo, 'testtag');
+
+    describe('Destination: ecr', () => {
+      // GIVEN
+      const destinationRepo = new ecr.Repository(stack, 'TestDestinationRepository1');
+      const testDesination = imagedeploy.Destination.ecr(destinationRepo, { tag: 'testtag' });
+
+      // WHEN
+      test('dockerimagedeploy construct', () => {
+        new imagedeploy.DockerImageDeployment(stack, 'AssetSourceTestDeployment', {
+          source: ecrSource,
+          destination: testDesination,
+        });
+      });
+    });
+
+  });
+
+  describe('Source: local asset', () => {
+    // GIVEN
+    const asset = new ecr_assets.DockerImageAsset(stack, 'TestAsset', {
+      directory: path.join(__dirname, 'assets/test1'),
+    });
+    const assetSource = imagedeploy.Source.asset(asset);
+
+    describe('Destination: ecr', () => {
+      // GIVEN
+      const destinationRepo = new ecr.Repository(stack, 'TestDestinationRepository2');
+      const testDesination = imagedeploy.Destination.ecr(destinationRepo, { tag: 'testtag' });
+
+      // WHEN
+      test('dockerimagedeploy construct', () => {
+        new imagedeploy.DockerImageDeployment(stack, 'EcrSourceTestDeployment', {
+          source: assetSource,
+          destination: testDesination,
+        });
+      });
+    });
   });
 
   describe('Custom Resrouces', () => {
