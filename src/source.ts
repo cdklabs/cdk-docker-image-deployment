@@ -79,3 +79,27 @@ class DirectorySource extends Source {
     };
   }
 }
+
+class EcrSource extends Source {
+  private path: string;
+
+  constructor(path: string) {
+    super();
+    this.path = path;
+  }
+
+  public bind(scope: Construct, context: SourceContext): SourceConfig {
+
+    const asset = new ecr_assets.DockerImageAsset(scope, 'asset', {
+      directory: this.path,
+    });
+
+    asset.repository.grantPull(context.handlerRole);
+
+    return {
+      imageUri: asset.imageUri,
+      imageTag: Fn.select(1, Fn.split(':', asset.imageUri)),
+      //imageTag: asset.imageTag
+    };
+  }
+}

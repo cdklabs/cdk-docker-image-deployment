@@ -308,6 +308,11 @@ describe('DockerImageDeploy', () => {
     });
   });
 
+  describe('Source: ecr', () => {
+    
+    const testSource = imagedeploy.Source.ecr()
+  });
+
   describe('Custom Resrouces', () => {
     test('onEventHandler has correct permissions', () => {
       Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
