@@ -76,25 +76,25 @@ export class DockerImageDeployment extends Construct {
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
       entry: 'lib/codebuild-handler/index.js',
       handler: 'onEventhandler',
-      depsLockFilePath: 'yarn.lock',
       runtime: Runtime.NODEJS_16_X,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
       entry: 'lib/codebuild-handler/index.js',
       handler: 'isCompleteHandler',
-      depsLockFilePath: 'yarn.lock',
       runtime: Runtime.NODEJS_16_X,
     });
 
-    iam.Grant.addToPrincipal({
+
+    // https://github.com/aws/aws-cdk/issues/21721 issue to add grant methods to codebuild
+    const grantOnEvent = iam.Grant.addToPrincipal({
       grantee: onEventHandler,
       actions: ['codebuild:StartBuild'],
       resourceArns: [this.cb.projectArn],
       scope: this,
     });
 
-    iam.Grant.addToPrincipal({
+    const grantIsComplete = iam.Grant.addToPrincipal({
       grantee: isCompleteHandler,
       actions: [
         'codebuild:ListBuildsForProject',
@@ -108,7 +108,7 @@ export class DockerImageDeployment extends Construct {
       onEventHandler: onEventHandler,
       isCompleteHandler: isCompleteHandler,
       queryInterval: Duration.seconds(30),
-      totalTimeout: Duration.minutes(10),
+      totalTimeout: Duration.minutes(30),
     });
 
     const customResource = new CustomResource(this, `CustomResource${Date.now().toString()}`, {
@@ -118,6 +118,6 @@ export class DockerImageDeployment extends Construct {
       },
     });
 
-    customResource.node.addDependency(handlerRole);
+    customResource.node.addDependency(grantOnEvent, grantIsComplete);
   }
 }

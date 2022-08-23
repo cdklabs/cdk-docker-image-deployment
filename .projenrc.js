@@ -1,18 +1,33 @@
 const { awscdk } = require('projen');
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
-  authorAddress: 'pscanlo@amazon.com',
+  authorAddress: 'https://aws.amazon.com/',
   cdkVersion: '2.38.1',
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
-  repositoryUrl: 'git@github.com:scanlonp/cdk-docker-image-deployment.git',
+  repositoryUrl: 'git@github.com:cdklabs/cdk-docker-image-deployment.git',
   autoApproveUpgrades: true,
-  autoApproveOptions: {},
-  gitignore: ['/cdk.out', 'package-lock.json', 'hello.test.ts'],
-  //deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  devDeps: ['@aws-cdk/integ-tests-alpha'], /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+  autoApproveOptions: {
+    allowedUsernames: ['cdklabs-automation'],
+    secret: 'GITHUB_TOKEN',
+  },
+  gitignore: ['/cdk.out'],
+  description: 'This module allows you to copy docker image assets to a repository you control. This can be necessary if you want to build a Docker image in one CDK app and consume it in a different app or outside the CDK.',
+  devDeps: ['@aws-cdk/integ-tests-alpha'],
   bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
+  publishToPypi: {
+    distName: 'cdk-docker-image-deployment',
+    module: 'cdk_docker_image_deployment',
+  },
+  publishToMaven: {
+    javaPackage: 'io.github.cdklabs.cdk.docker.image.deployment',
+    mavenGroupId: 'io.github.cdklabs',
+    mavenArtifactId: 'cdk-docker-image-deployment',
+    mavenEndpoint: 'https://s01.oss.sonatype.org',
+  },
+  publishToNuget: {
+    dotNetNamespace: 'Cdklabs.CdkDockerImageDeployment',
+    packageId: 'Cdklabs.CdkDockerImageDeployment',
+  },
 });
 project.synth();

@@ -32,8 +32,6 @@ jspm_packages/
 .yarn-integrity
 .cache
 /cdk.out
-package-lock.json
-hello.test.ts
 !/.projenrc.js
 /test-reports/
 junit.xml
