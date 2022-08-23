@@ -68,7 +68,7 @@ export abstract class Destination {
 }
 
 /**
- * Destination of docker image deployment is an ECR repository
+ * Class used when the destination of docker image deployment is an ECR repository
  */
 class EcrDestination extends Destination {
   private repository: ecr.IRepository;

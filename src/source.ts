@@ -35,21 +35,27 @@ export interface SourceContext {
  *
  * Usage:
  *
- *  ```ts
- *  Source.directory('path/to/directory')
- *  ```
+ * ```ts
+ * import * as path from 'path';
+ * const path = path.join(__dirname, 'path/to/directory');
+ * const sourceDirectory = Source.directory(path);
+ * ```
  *
  */
 export abstract class Source {
   /**
    * Uses a local image built from a Dockerfile in a local directory as the source
    *
-   * @param path
+   * @param path - path to the directory containing your Dockerfile (not a path to a file)
    */
   public static directory(path: string): Source {
     return new DirectorySource(path);
   }
 
+  /**
+   * bind grants the CodeBuild role permissions to pull from a repository if necessary
+   * bind should be invoked by the caller to get the SourceConfig
+   */
   public abstract bind(scope: Construct, context: SourceContext): SourceConfig;
 }
 
@@ -74,8 +80,8 @@ class DirectorySource extends Source {
 
     return {
       imageUri: asset.imageUri,
-      imageTag: Fn.select(1, Fn.split(':', asset.imageUri)),
-      //imageTag: asset.imageTag
+      imageTag: Fn.select(1, Fn.split(':', asset.imageUri)), // uri will be something like 'directory/of/image:tag' so this picks out the tag from the token
+      //imageTag: asset.imageTag - will be available in cdk 2.38.1
     };
   }
 }
