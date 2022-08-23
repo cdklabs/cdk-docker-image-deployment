@@ -87,6 +87,8 @@ export class DockerImageDeployment extends Construct {
       runtime: Runtime.NODEJS_16_X,
     });
 
+
+    // https://github.com/aws/aws-cdk/issues/21721 issue to add grant methods to codebuild
     iam.Grant.addToPrincipal({
       grantee: onEventHandler,
       actions: ['codebuild:StartBuild'],
@@ -108,7 +110,7 @@ export class DockerImageDeployment extends Construct {
       onEventHandler: onEventHandler,
       isCompleteHandler: isCompleteHandler,
       queryInterval: Duration.seconds(30),
-      totalTimeout: Duration.minutes(10),
+      totalTimeout: Duration.minutes(30),
     });
 
     const customResource = new CustomResource(this, `CustomResource${Date.now().toString()}`, {
