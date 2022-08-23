@@ -39,8 +39,9 @@ export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomRes
 
     // we should always have a build since we have a valid buildId
     if (build.builds && build.builds.length > 0) {
-      const currentPhase = build.builds[0].currentPhase;
-      const buildStatus = build.builds[0].buildStatus;
+      const latestBuild = build.builds[0];
+      const currentPhase = latestBuild.currentPhase;
+      const buildStatus = latestBuild.buildStatus;
 
       if (currentPhase === 'COMPLETED' && buildStatus === 'SUCCEEDED') {
         return {
