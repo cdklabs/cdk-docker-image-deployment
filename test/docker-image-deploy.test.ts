@@ -308,6 +308,78 @@ describe('DockerImageDeploy', () => {
     });
   });
 
+  describe('Tag validation', () => {
+    // GIVEN
+    const repo = new ecr.Repository(stack, 'TestTagsRepository');
+    const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
+
+    test('valid tag', () => {
+      new imagedeploy.DockerImageDeployment(stack, 'TestValidTag', {
+        source: testSource,
+        destination: imagedeploy.Destination.ecr(repo, { tag: '_test_TEST-1234.tag-' }),
+      });
+    });
+
+    test('options not provided does not throw', () => {
+      new imagedeploy.DockerImageDeployment(stack, 'TestNoOptions', {
+        source: testSource,
+        destination: imagedeploy.Destination.ecr(repo),
+      });
+    });
+
+    test('tag not provided does not throw', () => {
+      new imagedeploy.DockerImageDeployment(stack, 'TestNoTag', {
+        source: testSource,
+        destination: imagedeploy.Destination.ecr(repo, {}),
+      });
+    });
+
+    test('empyty tag', () => {
+      expect(() => {
+        new imagedeploy.DockerImageDeployment(stack, 'TestEmptyTag', {
+          source: testSource,
+          destination: imagedeploy.Destination.ecr(repo, { tag: '' }),
+        });
+      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
+    });
+
+    test('tag contains invalid character', () => {
+      expect(() => {
+        new imagedeploy.DockerImageDeployment(stack, 'TestInvalidCharacter', {
+          source: testSource,
+          destination: imagedeploy.Destination.ecr(repo, { tag: 'testTag123!' }),
+        });
+      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
+    });
+
+    test('tag starts with invalid character \'-\'', () => {
+      expect(() => {
+        new imagedeploy.DockerImageDeployment(stack, 'TestStartInvalidCharacterDash', {
+          source: testSource,
+          destination: imagedeploy.Destination.ecr(repo, { tag: '-testTag123' }),
+        });
+      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
+    });
+
+    test('tag starts with invalid character \'.\'', () => {
+      expect(() => {
+        new imagedeploy.DockerImageDeployment(stack, 'TestStartInvalidCharacterPeriod', {
+          source: testSource,
+          destination: imagedeploy.Destination.ecr(repo, { tag: '.testTag123' }),
+        });
+      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
+    });
+
+    test('tag is over max length', () => {
+      expect(() => {
+        new imagedeploy.DockerImageDeployment(stack, 'TestMaxTagLength', {
+          source: testSource,
+          destination: imagedeploy.Destination.ecr(repo, { tag: 'longtag-10longtag-20longtag-30longtag-40longtag-50longtag-60longtag-70longtag-80longtag-90longtag-101logestTagOneCharacterOver128' }),
+        });
+      }).toThrow('Invalid tag: tags may contain a maximum of 128 characters');
+    });
+  });
+
   describe('Custom Resrouces', () => {
     test('onEventHandler has correct permissions', () => {
       Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
@@ -348,56 +420,6 @@ describe('DockerImageDeploy', () => {
           ]),
         },
       });
-    });
-  });
-});
-
-describe('Destination', () => {
-  describe('Tag validation', () => {
-    // GIVEN
-    const stack = new cdk.Stack();
-    const repo = new ecr.Repository(stack, 'TestRepository');
-
-    test('valid tag', () => {
-      expect(imagedeploy.Destination.ecr(repo, { tag: '_test_TEST-1234.tag-' }).config.destinationTag).toEqual('_test_TEST-1234.tag-');
-    });
-
-    test('options not provided does not throw', () => {
-      expect(imagedeploy.Destination.ecr(repo).config.destinationTag).toEqual(undefined);
-    });
-
-    test('tag not provided does not throw', () => {
-      expect(imagedeploy.Destination.ecr(repo, {}).config.destinationTag).toEqual(undefined);
-    });
-
-    test('empyty tag', () => {
-      expect(() => {
-        imagedeploy.Destination.ecr(repo, { tag: '' });
-      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
-    });
-
-    test('tag contains invalid character', () => {
-      expect(() => {
-        imagedeploy.Destination.ecr(repo, { tag: 'testTag123!' });
-      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
-    });
-
-    test('tag starts with invalid character \'-\'', () => {
-      expect(() => {
-        imagedeploy.Destination.ecr(repo, { tag: '-testTag123' });
-      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
-    });
-
-    test('tag starts with invalid character \'.\'', () => {
-      expect(() => {
-        imagedeploy.Destination.ecr(repo, { tag: '.testTag123' });
-      }).toThrow('Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'');
-    });
-
-    test('tag is over max length', () => {
-      expect(() => {
-        imagedeploy.Destination.ecr(repo, { tag: 'longtag-10longtag-20longtag-30longtag-40longtag-50longtag-60longtag-70longtag-80longtag-90longtag-101logestTagOneCharacterOver128' });
-      }).toThrow('Invalid tag: tags may contain a maximum of 128 characters');
     });
   });
 });

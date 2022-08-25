@@ -1,4 +1,4 @@
-import { Stack, CustomResource, Duration, CfnOutput } from 'aws-cdk-lib';
+import { Stack, CustomResource, Duration, CfnOutput, Token } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -132,6 +132,9 @@ export class DockerImageDeployment extends Construct {
   }
 
   private validateTag(tag: string): void {
+    if (Token.isUnresolved(tag)) {
+      return; // if token tag is likely from source, so assume it is valid
+    }
     if (tag.length > 128) {
       throw new Error (`Invalid tag: tags may contain a maximum of 128 characters; your tag ${tag} has ${tag.length} characters`);
     }
