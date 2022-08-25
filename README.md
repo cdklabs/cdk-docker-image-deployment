@@ -21,7 +21,9 @@ new imagedeploy.DockerImageDeployment(this, 'ExampleImageDeployment', {
 ```
 new imagedeploy.DockerImageDeployment(this, 'ExampleImageDeploymentWithTag', {
   source: imagedeploy.Source.directory('path/to/directory'),
-  destination: imagedeploy.Destination.ecr(repo, 'exampletag')
+  destination: imagedeploy.Destination.ecr(repo, { 
+    tag: 'exampletag'
+  })
 });
 ```
 
