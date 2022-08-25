@@ -1,4 +1,4 @@
-import { Stack, CustomResource, Duration } from 'aws-cdk-lib';
+import { Stack, CustomResource, Duration, CfnOutput } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -120,11 +120,12 @@ export class DockerImageDeployment extends Construct {
 
     customResource.node.addDependency(grantOnEvent, grantIsComplete);
 
-    /*
-    // dont know what to do here, this breaks
-    new CfnOutput(this, 'CodeBuildResult', {
-      value: customResource.getAtt('Data').toString(),
-    });
-    */
+    try {
+      new CfnOutput(this, 'CustomResourceReport', {
+        value: `${customResource.getAttString('Status')}, see the logs here: ${customResource.getAtt('LogsUrl')}`,
+      });
+    } catch (error) {
+      throw new Error('Error getting the report from the custom resource');
+    }
   }
 }

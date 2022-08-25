@@ -14,29 +14,23 @@ export async function onEventhandler(event: AWSLambda.CloudFormationCustomResour
 }
 
 export async function startBuild(event: AWSLambda.CloudFormationCustomResourceEvent) {
-  const requestType = event.RequestType;
   const projectName = event.ResourceProperties.projectName;
-  if (requestType === 'Create' || requestType === 'Update') {
-    const buildOutput = await cb.startBuild({
-      projectName: projectName,
-    }).promise();
+  const buildOutput = await cb.startBuild({
+    projectName: projectName,
+  }).promise();
 
-    const buildId = buildOutput.build?.id;
+  const buildId = buildOutput.build?.id;
 
-    if (buildId) {
-      return {
-        BuildId: buildId,
-      };
-    } else {
-      throw new Error('BuildId does not exist after CodeBuild:StartBuild call'); // pass to isComplete
-    }
+  if (buildId) {
+    return {
+      BuildId: buildId, // pass to isComplete
+    };
+  } else {
+    throw new Error('BuildId does not exist after CodeBuild:StartBuild call');
   }
-  if (requestType === 'Delete') {
-    return {};
-  }
-  throw new Error(`Invalid request type: ${requestType}`);
 }
 
+// pass isComplete a value to indicate it does not need to wait on delete events
 export async function onDelete() {
   return {
     BuildId: 'onDelete',
@@ -47,10 +41,11 @@ export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomRes
 
   const buildId = (event as any).BuildId; // BuildId is passed in from onEvent CodeBuild:StartBuild call
 
-  if (buildId === undefined) {
+  if (!buildId) {
     throw new Error('BuildId was not found or undefined');
   }
 
+  // isComplete does not need to wait on delete events
   if (buildId === 'onDelete') {
     return { IsComplete: true };
   }
@@ -60,27 +55,29 @@ export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomRes
   }).promise();
 
   // we should always have a build since we have a valid buildId
-  if (build.builds && build.builds.length > 0) {
-    const buildResponse = build.builds[0];
-    const currentPhase = buildResponse.currentPhase;
-    const buildStatus = buildResponse.buildStatus;
+  if (!build.builds || build.builds.length <= 0) {
+    throw new Error(`Build does not exist for BuildId: ${buildId}`);
+  }
 
-    if (currentPhase === 'COMPLETED' && buildStatus === 'SUCCEEDED') {
-      return {
-        IsComplete: true,
-        Data: { Status: 'CodeBuild complete' },
-      };
-    } else if (currentPhase === 'COMPLETED' && buildStatus === 'FAILED') {
-      if (buildResponse.logs) {
-        throw new Error(`CodeBuild failed, check the logs at ${buildResponse.logs}`);
-      } else {
-        throw new Error('CodeBuild failed'); // this case should never be reached
-      }
+  const buildResponse = build.builds[0];
+  const currentPhase = buildResponse.currentPhase;
+  const buildStatus = buildResponse.buildStatus;
 
+  if (currentPhase === 'COMPLETED' && buildStatus === 'SUCCEEDED') {
+    return {
+      IsComplete: true,
+      Data: {
+        Status: 'CodeBuild completed successfully',
+        LogsUrl: `${JSON.stringify(buildResponse.logs?.deepLink)}`,
+      },
+    };
+  } else if (currentPhase === 'COMPLETED' && buildStatus === 'FAILED') {
+    if (buildResponse.logs?.deepLink) {
+      throw new Error(`CodeBuild failed, check the logs here: ${buildResponse.logs.deepLink}`);
     } else {
-      return { IsComplete: false }; // not finished
+      throw new Error('CodeBuild failed'); // this case should never be reached
     }
   } else {
-    throw new Error(`Build does not exist for BuildId: ${buildId}`);
+    return { IsComplete: false }; // not finished
   }
 }
