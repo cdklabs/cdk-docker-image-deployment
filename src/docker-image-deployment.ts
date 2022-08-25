@@ -39,6 +39,8 @@ export class DockerImageDeployment extends Construct {
     const sourceUri = sourceConfig.imageUri;
 
     const destTag = props.destination.config.destinationTag ?? sourceConfig.imageTag;
+    this.validateTag(destTag);
+
     const destUri = `${props.destination.config.destinationUri}:${destTag}`;
 
     const accountId = Stack.of(this).account;
@@ -126,6 +128,15 @@ export class DockerImageDeployment extends Construct {
       });
     } catch (error) {
       throw new Error('Error getting the report from the custom resource');
+    }
+  }
+
+  private validateTag(tag: string): void {
+    if (tag.length > 128) {
+      throw new Error (`Invalid tag: tags may contain a maximum of 128 characters; your tag ${tag} has ${tag.length} characters`);
+    }
+    if (!/^[^-.][a-zA-Z0-9-_.]+$/.test(tag)) {
+      throw new Error(`Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'; your tag was ${tag}`);
     }
   }
 }

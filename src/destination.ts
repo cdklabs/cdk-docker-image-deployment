@@ -51,15 +51,6 @@ export abstract class Destination {
 
   public abstract readonly config: DestinationConfig;
 
-  protected validateTag(tag: string): void {
-    if (tag.length > 128) {
-      throw new Error (`Invalid tag: tags may contain a maximum of 128 characters; your tag ${tag} has ${tag.length} characters`);
-    }
-    if (!/^[^-.][a-zA-Z0-9-_.]+$/.test(tag)) {
-      throw new Error(`Invalid tag: tags must contain alphanumeric characters and \'-\' \'_\' \'.\' only and must not begin with \'.\' or \'-\'; your tag was ${tag}`);
-    }
-  }
-
   /**
    * bind grants the CodeBuild role permissions to pull and push to a repository if necessary
    * bind should be invoked by the caller to get the DestinationConfig
@@ -78,10 +69,6 @@ class EcrDestination extends Destination {
     super();
 
     this.repository = repository;
-
-    if (options?.tag !== undefined) {
-      super.validateTag(options.tag);
-    }
 
     this.config = {
       destinationUri: repository.repositoryUri,
