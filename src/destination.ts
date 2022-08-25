@@ -62,7 +62,7 @@ export abstract class Destination {
 
   /**
    * bind grants the CodeBuild role permissions to pull and push to a repository if necessary
-   * bind should be invoked by the caller to get the DesitinationConfig
+   * bind should be invoked by the caller to get the DestinationConfig
    */
   public abstract bind(role: iam.IGrantable): void;
 }
