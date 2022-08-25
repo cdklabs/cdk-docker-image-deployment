@@ -1,4 +1,4 @@
-import { Stack, CustomResource, Duration } from 'aws-cdk-lib';
+import { Stack, CustomResource, Duration, CfnOutput } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -119,5 +119,9 @@ export class DockerImageDeployment extends Construct {
     });
 
     customResource.node.addDependency(grantOnEvent, grantIsComplete);
+
+    new CfnOutput(this, 'CodeBuildResult', {
+      value: customResource.getAtt('Data').toString(),
+    });
   }
 }

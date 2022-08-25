@@ -145,10 +145,9 @@ public readonly destinationTag: string;
 ```
 
 - *Type:* string
+- *Default:* the tag of the source
 
 The tag of the deployed image.
-
-Defaults to the tag of the source if not provided.
 
 ---
 
@@ -195,35 +194,36 @@ Source of the image to deploy.
 
 ---
 
-### EcrOptions <a name="EcrOptions" id="cdk-docker-image-deployment.EcrOptions"></a>
+### EcrSourceOptions <a name="EcrSourceOptions" id="cdk-docker-image-deployment.EcrSourceOptions"></a>
 
 Properties needed for Source.ecr.
 
-#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.EcrOptions.Initializer"></a>
+#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.EcrSourceOptions.Initializer"></a>
 
 ```typescript
-import { EcrOptions } from 'cdk-docker-image-deployment'
+import { EcrSourceOptions } from 'cdk-docker-image-deployment'
 
-const ecrOptions: EcrOptions = { ... }
+const ecrSourceOptions: EcrSourceOptions = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.EcrOptions.property.tag">tag</a></code> | <code>string</code> | Tag of deployed image Defaults to tag of source. |
+| <code><a href="#cdk-docker-image-deployment.EcrSourceOptions.property.tag">tag</a></code> | <code>string</code> | Tag of deployed image. |
 
 ---
 
-##### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.EcrOptions.property.tag"></a>
+##### `tag`<sup>Optional</sup> <a name="tag" id="cdk-docker-image-deployment.EcrSourceOptions.property.tag"></a>
 
 ```typescript
 public readonly tag: string;
 ```
 
 - *Type:* string
+- *Default:* tag of source
 
-Tag of deployed image Defaults to tag of source.
+Tag of deployed image.
 
 ---
 
@@ -312,9 +312,12 @@ Specifies docker image deployment destination.
 
 Usage:
 
-  ```ts
-  Destination.ecr(repository, 'tag')
-  ```
+```ts
+declare const repo: ecr.IRepository;
+const destinationEcr = dockerDeploy.Destination.ecr(repository, {
+   tag: 'tag',
+});
+```
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Destination.Initializer"></a>
 
@@ -333,7 +336,7 @@ new Destination()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.bind">bind</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Destination.bind">bind</a></code> | bind grants the CodeBuild role permissions to pull and push to a repository if necessary bind should be invoked by the caller to get the DesitinationConfig. |
 
 ---
 
@@ -342,6 +345,8 @@ new Destination()
 ```typescript
 public bind(role: IGrantable): void
 ```
+
+bind grants the CodeBuild role permissions to pull and push to a repository if necessary bind should be invoked by the caller to get the DesitinationConfig.
 
 ###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.Destination.bind.parameter.role"></a>
 
@@ -362,7 +367,7 @@ public bind(role: IGrantable): void
 ```typescript
 import { Destination } from 'cdk-docker-image-deployment'
 
-Destination.ecr(repository: IRepository, options?: EcrOptions)
+Destination.ecr(repository: IRepository, options?: EcrSourceOptions)
 ```
 
 Uses an ECR repository as the destination for the image.
@@ -375,7 +380,7 @@ Uses an ECR repository as the destination for the image.
 
 ###### `options`<sup>Optional</sup> <a name="options" id="cdk-docker-image-deployment.Destination.ecr.parameter.options"></a>
 
-- *Type:* <a href="#cdk-docker-image-deployment.EcrOptions">EcrOptions</a>
+- *Type:* <a href="#cdk-docker-image-deployment.EcrSourceOptions">EcrSourceOptions</a>
 
 ---
 
@@ -404,9 +409,11 @@ Specifies docker image deployment source.
 
 Usage:
 
-  ```ts
-  Source.directory('path/to/directory')
-  ```
+```ts
+import * as path from 'path';
+const path = path.join(__dirname, 'path/to/directory');
+const sourceDirectory = Source.directory(path);
+```
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Source.Initializer"></a>
 
@@ -425,7 +432,7 @@ new Source()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Source.bind">bind</a></code> | *No description.* |
+| <code><a href="#cdk-docker-image-deployment.Source.bind">bind</a></code> | bind grants the CodeBuild role permissions to pull from a repository if necessary bind should be invoked by the caller to get the SourceConfig. |
 
 ---
 
@@ -434,6 +441,8 @@ new Source()
 ```typescript
 public bind(scope: Construct, context: SourceContext): SourceConfig
 ```
+
+bind grants the CodeBuild role permissions to pull from a repository if necessary bind should be invoked by the caller to get the SourceConfig.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.Source.bind.parameter.scope"></a>
 
@@ -468,6 +477,8 @@ Uses a local image built from a Dockerfile in a local directory as the source.
 ###### `path`<sup>Required</sup> <a name="path" id="cdk-docker-image-deployment.Source.directory.parameter.path"></a>
 
 - *Type:* string
+
+path to the directory containing your Dockerfile (not a path to a file).
 
 ---
 
