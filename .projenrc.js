@@ -13,7 +13,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   gitignore: ['/cdk.out'],
   description: 'This module allows you to copy docker image assets to a repository you control. This can be necessary if you want to build a Docker image in one CDK app and consume it in a different app or outside the CDK.',
-  devDeps: ['@aws-cdk/integ-tests-alpha'],
   bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
   publishToPypi: {
     distName: 'cdk-docker-image-deployment',
