@@ -1,4 +1,4 @@
-const { awscdk } = require('projen');
+const { awscdk, JobStep } = require('projen');
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
   authorAddress: 'https://aws.amazon.com/',
@@ -14,6 +14,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   gitignore: ['/cdk.out'],
   description: 'This module allows you to copy docker image assets to a repository you control. This can be necessary if you want to build a Docker image in one CDK app and consume it in a different app or outside the CDK.',
   bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
+  workflowBootstrapSteps: [{
+    name: 'Allow docker commands',
+    run: 'sudo chown superchain /var/run/docker.sock', // allow docker commands in jsii superchain container
+  }],
   publishToPypi: {
     distName: 'cdk-docker-image-deployment',
     module: 'cdk_docker_image_deployment',
