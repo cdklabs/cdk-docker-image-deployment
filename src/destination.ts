@@ -18,7 +18,7 @@ export interface DestinationConfig {
 
   /**
    * The tag of the deployed image.
-   * 
+   *
    * @default - the tag of the source
    */
   readonly destinationTag?: string;
@@ -30,7 +30,7 @@ export interface DestinationConfig {
 export interface EcrSourceOptions {
   /**
    * Tag of deployed image.
-   * 
+   *
    * @default -  tag of source
    */
   readonly tag?: string;
@@ -56,7 +56,6 @@ export abstract class Destination {
   public static ecr(repository: ecr.IRepository, options?: EcrSourceOptions): Destination {
     return new EcrDestination(repository, options);
   }
-
 
   /**
    * Bind grants the CodeBuild role permissions to pull and push to a repository if necessary.
