@@ -29,4 +29,5 @@ const project = new awscdk.AwsCdkConstructLibrary({
     packageId: 'Cdklabs.CdkDockerImageDeployment',
   },
 });
+
 project.synth();

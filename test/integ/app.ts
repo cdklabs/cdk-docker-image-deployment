@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Stack, App } from 'aws-cdk-lib';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { Construct } from 'constructs';
-import * as imagedeploy from '../../lib/index';
+import * as imagedeploy from '../../src/index';
 
 const app = new App();
 
