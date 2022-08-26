@@ -18,6 +18,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
+      - name: Allow docker commands
+        runs: sudo chown superchain /var/run/docker.sock
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Upgrade dependencies
