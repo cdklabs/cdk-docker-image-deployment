@@ -85,7 +85,6 @@ export class DockerImageDeployment extends Construct {
       runtime: Runtime.NODEJS_16_X,
     });
 
-
     // https://github.com/aws/aws-cdk/issues/21721 issue to add grant methods to codebuild
     const grantOnEvent = iam.Grant.addToPrincipal({
       grantee: onEventHandler,
