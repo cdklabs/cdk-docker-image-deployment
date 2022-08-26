@@ -21,8 +21,6 @@ export interface DestinationConfig {
    * @default - the tag of the source
    */
   readonly destinationTag?: string;
-
-
 }
 
 /**
@@ -57,7 +55,6 @@ export abstract class Destination {
     return new EcrDestination(repository, options);
   }
 
-  //public abstract readonly config: DestinationConfig;
 
   /**
    * Bind grants the CodeBuild role permissions to pull and push to a repository if necessary.
@@ -72,7 +69,6 @@ export abstract class Destination {
 class EcrDestination extends Destination {
   private repository: ecr.IRepository;
   private options?: EcrSourceOptions;
-  //public readonly config: DestinationConfig;
 
   constructor(repository: ecr.IRepository, options?: EcrSourceOptions) {
     super();
@@ -80,12 +76,6 @@ class EcrDestination extends Destination {
     this.repository = repository;
     this.options = options;
 
-    /*
-    this.config = {
-      destinationUri: repository.repositoryUri,
-      destinationTag: options?.tag,
-    };
-    */
   }
 
   public bind(role: iam.IGrantable): DestinationConfig {

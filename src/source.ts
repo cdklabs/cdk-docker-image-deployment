@@ -92,7 +92,6 @@ class DirectorySource extends Source {
         region: region,
       },
       imageTag: Fn.select(1, Fn.split(':', asset.imageUri)), // uri will be something like 'directory/of/image:tag' so this picks out the tag from the token
-      //imageTag: asset.imageTag - will be available in cdk 2.38.1
     };
   }
 }

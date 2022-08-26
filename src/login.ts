@@ -10,6 +10,7 @@ export interface LoginConfig {
 
   /**
    * Region of ECR repository.
+   *
    * @default - undefined if not an ECR repository
    */
   readonly region?: string;
