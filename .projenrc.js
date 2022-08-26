@@ -16,7 +16,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
   workflowBootstrapSteps: [{
     name: 'Allow docker commands',
-    runs: 'sudo chown superchain /var/run/docker.sock', // allow docker commands in jsii superchain container
+    run: 'sudo chown superchain /var/run/docker.sock', // allow docker commands in jsii superchain container
   }],
   publishToPypi: {
     distName: 'cdk-docker-image-deployment',
