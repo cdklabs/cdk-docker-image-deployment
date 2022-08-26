@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { CustomResource, Duration, CfnOutput, Token } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -74,13 +75,13 @@ export class DockerImageDeployment extends Construct {
     });
 
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
-      entry: 'src/codebuild-handler/index.ts',
+      entry: path.join(__dirname, 'codebuild-handler/index.ts'),
       handler: 'onEventhandler',
       runtime: Runtime.NODEJS_16_X,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
-      entry: 'src/codebuild-handler/index.ts',
+      entry: path.join(__dirname, 'codebuild-handler/index.ts'),
       handler: 'isCompleteHandler',
       runtime: Runtime.NODEJS_16_X,
     });
