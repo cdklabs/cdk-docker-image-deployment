@@ -18,6 +18,7 @@ export interface DestinationConfig {
 
   /**
    * The tag of the deployed image.
+   * 
    * @default - the tag of the source
    */
   readonly destinationTag?: string;
@@ -29,6 +30,7 @@ export interface DestinationConfig {
 export interface EcrSourceOptions {
   /**
    * Tag of deployed image.
+   * 
    * @default -  tag of source
    */
   readonly tag?: string;
