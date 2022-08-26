@@ -122,6 +122,7 @@ const destinationConfig: DestinationConfig = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.destinationUri">destinationUri</a></code> | <code>string</code> | The URI of the destination repository to deploy to. |
+| <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.loginConfig">loginConfig</a></code> | <code><a href="#cdk-docker-image-deployment.LoginConfig">LoginConfig</a></code> | The login command and region. |
 | <code><a href="#cdk-docker-image-deployment.DestinationConfig.property.destinationTag">destinationTag</a></code> | <code>string</code> | The tag of the deployed image. |
 
 ---
@@ -135,6 +136,18 @@ public readonly destinationUri: string;
 - *Type:* string
 
 The URI of the destination repository to deploy to.
+
+---
+
+##### `loginConfig`<sup>Required</sup> <a name="loginConfig" id="cdk-docker-image-deployment.DestinationConfig.property.loginConfig"></a>
+
+```typescript
+public readonly loginConfig: LoginConfig;
+```
+
+- *Type:* <a href="#cdk-docker-image-deployment.LoginConfig">LoginConfig</a>
+
+The login command and region.
 
 ---
 
@@ -227,6 +240,54 @@ Tag of deployed image.
 
 ---
 
+### LoginConfig <a name="LoginConfig" id="cdk-docker-image-deployment.LoginConfig"></a>
+
+Login commands for specified registry.
+
+#### Initializer <a name="Initializer" id="cdk-docker-image-deployment.LoginConfig.Initializer"></a>
+
+```typescript
+import { LoginConfig } from 'cdk-docker-image-deployment'
+
+const loginConfig: LoginConfig = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-docker-image-deployment.LoginConfig.property.loginCommand">loginCommand</a></code> | <code>string</code> | Command to run in codebuild to login. |
+| <code><a href="#cdk-docker-image-deployment.LoginConfig.property.region">region</a></code> | <code>string</code> | Region of ECR repository. |
+
+---
+
+##### `loginCommand`<sup>Required</sup> <a name="loginCommand" id="cdk-docker-image-deployment.LoginConfig.property.loginCommand"></a>
+
+```typescript
+public readonly loginCommand: string;
+```
+
+- *Type:* string
+
+Command to run in codebuild to login.
+
+Formatted `docker login ...`.
+
+---
+
+##### `region`<sup>Optional</sup> <a name="region" id="cdk-docker-image-deployment.LoginConfig.property.region"></a>
+
+```typescript
+public readonly region: string;
+```
+
+- *Type:* string
+- *Default:* undefined if not an ECR repository
+
+Region of ECR repository.
+
+---
+
 ### SourceConfig <a name="SourceConfig" id="cdk-docker-image-deployment.SourceConfig"></a>
 
 Source information.
@@ -245,6 +306,7 @@ const sourceConfig: SourceConfig = { ... }
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.SourceConfig.property.imageTag">imageTag</a></code> | <code>string</code> | The source tag. |
 | <code><a href="#cdk-docker-image-deployment.SourceConfig.property.imageUri">imageUri</a></code> | <code>string</code> | The source image URI. |
+| <code><a href="#cdk-docker-image-deployment.SourceConfig.property.loginConfig">loginConfig</a></code> | <code><a href="#cdk-docker-image-deployment.LoginConfig">LoginConfig</a></code> | The login command and region. |
 
 ---
 
@@ -269,6 +331,18 @@ public readonly imageUri: string;
 - *Type:* string
 
 The source image URI.
+
+---
+
+##### `loginConfig`<sup>Required</sup> <a name="loginConfig" id="cdk-docker-image-deployment.SourceConfig.property.loginConfig"></a>
+
+```typescript
+public readonly loginConfig: LoginConfig;
+```
+
+- *Type:* <a href="#cdk-docker-image-deployment.LoginConfig">LoginConfig</a>
+
+The login command and region.
 
 ---
 
@@ -336,17 +410,19 @@ new Destination()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.bind">bind</a></code> | bind grants the CodeBuild role permissions to pull and push to a repository if necessary bind should be invoked by the caller to get the DesitinationConfig. |
+| <code><a href="#cdk-docker-image-deployment.Destination.bind">bind</a></code> | Bind grants the CodeBuild role permissions to pull and push to a repository if necessary. |
 
 ---
 
 ##### `bind` <a name="bind" id="cdk-docker-image-deployment.Destination.bind"></a>
 
 ```typescript
-public bind(role: IGrantable): void
+public bind(role: IGrantable): DestinationConfig
 ```
 
-bind grants the CodeBuild role permissions to pull and push to a repository if necessary bind should be invoked by the caller to get the DesitinationConfig.
+Bind grants the CodeBuild role permissions to pull and push to a repository if necessary.
+
+Bind should be invoked by the caller to get the DestinationConfig.
 
 ###### `role`<sup>Required</sup> <a name="role" id="cdk-docker-image-deployment.Destination.bind.parameter.role"></a>
 
@@ -358,7 +434,7 @@ bind grants the CodeBuild role permissions to pull and push to a repository if n
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.ecr">ecr</a></code> | Uses an ECR repository as the destination for the image. |
+| <code><a href="#cdk-docker-image-deployment.Destination.ecr">ecr</a></code> | Uses an ECR repository in the same account as the stack as the destination for the image. |
 
 ---
 
@@ -370,7 +446,7 @@ import { Destination } from 'cdk-docker-image-deployment'
 Destination.ecr(repository: IRepository, options?: EcrSourceOptions)
 ```
 
-Uses an ECR repository as the destination for the image.
+Uses an ECR repository in the same account as the stack as the destination for the image.
 
 ###### `repository`<sup>Required</sup> <a name="repository" id="cdk-docker-image-deployment.Destination.ecr.parameter.repository"></a>
 
@@ -384,23 +460,6 @@ Uses an ECR repository as the destination for the image.
 
 ---
 
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Destination.property.config">config</a></code> | <code><a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a></code> | *No description.* |
-
----
-
-##### `config`<sup>Required</sup> <a name="config" id="cdk-docker-image-deployment.Destination.property.config"></a>
-
-```typescript
-public readonly config: DestinationConfig;
-```
-
-- *Type:* <a href="#cdk-docker-image-deployment.DestinationConfig">DestinationConfig</a>
-
----
 
 
 ### Source <a name="Source" id="cdk-docker-image-deployment.Source"></a>
@@ -432,7 +491,7 @@ new Source()
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#cdk-docker-image-deployment.Source.bind">bind</a></code> | bind grants the CodeBuild role permissions to pull from a repository if necessary bind should be invoked by the caller to get the SourceConfig. |
+| <code><a href="#cdk-docker-image-deployment.Source.bind">bind</a></code> | Bind grants the CodeBuild role permissions to pull from a repository if necessary. |
 
 ---
 
@@ -442,7 +501,9 @@ new Source()
 public bind(scope: Construct, context: SourceContext): SourceConfig
 ```
 
-bind grants the CodeBuild role permissions to pull from a repository if necessary bind should be invoked by the caller to get the SourceConfig.
+Bind grants the CodeBuild role permissions to pull from a repository if necessary.
+
+Bind should be invoked by the caller to get the SourceConfig.
 
 ###### `scope`<sup>Required</sup> <a name="scope" id="cdk-docker-image-deployment.Source.bind.parameter.scope"></a>
 

@@ -292,6 +292,7 @@ describe('DockerImageDeploy', () => {
           BuildSpec: {
             'Fn::Join': Match.arrayWith([
               Match.arrayWith([
+                /*
                 '{\n  "version": "0.2",\n  "phases": {\n    "pre_build": {\n      "commands": [\n        "aws ecr get-login-password --region ',
                 { Ref: 'AWS::Region' },
                 ' | docker login --username AWS --password-stdin ',
@@ -300,6 +301,34 @@ describe('DockerImageDeploy', () => {
                 { Ref: 'AWS::Region' },
                 '.amazonaws.com"\n      ]\n    },\n    "build": {\n      "commands": [\n        "docker pull ',
                 { 'Fn::Sub': '${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:70d1a3115d17d2ad7210b272e45b7398a7661e7b0cf24b52e059ae3f1fa8f2c1' },
+                */
+                "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"aws ecr get-login-password --region ",
+                { "Ref": "AWS::Region" },
+                " | docker login --username AWS --password-stdin ",
+                { "Ref": "AWS::AccountId" },
+                ".dkr.ecr.",
+                { "Ref": "AWS::Region" },
+                ".amazonaws.com\",\n        \"docker pull ",
+                { "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:70d1a3115d17d2ad7210b272e45b7398a7661e7b0cf24b52e059ae3f1fa8f2c1" },
+                "\",\n        \"docker tag ",
+                { "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:70d1a3115d17d2ad7210b272e45b7398a7661e7b0cf24b52e059ae3f1fa8f2c1" },
+                " ",
+                { "Fn::Select": [ 4, { "Fn::Split": [ ":", { "Fn::GetAtt": [ "TestRepositoryC0DA8195", "Arn" ] } ] } ] },
+                ".dkr.ecr.",
+                { "Fn::Select": [ 3, { "Fn::Split": [ ":", { "Fn::GetAtt": [ "TestRepositoryC0DA8195", "Arn" ] } ] } ] },
+                ".",
+                { "Ref": "AWS::URLSuffix" },
+                "/",
+                { "Ref": "TestRepositoryC0DA8195" },
+                ":testtag\",\n        \"docker push ",
+                { "Fn::Select": [ 4, { "Fn::Split": [ ":", { "Fn::GetAtt": [ "TestRepositoryC0DA8195", "Arn" ] } ] } ] },
+                ".dkr.ecr.",
+                { "Fn::Select": [ 3, { "Fn::Split": [ ":", { "Fn::GetAtt": [ "TestRepositoryC0DA8195", "Arn" ] } ] } ] },
+                ".",
+                { "Ref": "AWS::URLSuffix" },
+                "/",
+                { "Ref": "TestRepositoryC0DA8195" },
+                ":testtag\",\n        \"docker logout\"\n      ]\n    }\n  }\n}"
               ]),
             ]),
           },

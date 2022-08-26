@@ -1,4 +1,4 @@
-import { Stack, CustomResource, Duration, CfnOutput, Token } from 'aws-cdk-lib';
+import { CustomResource, Duration, CfnOutput, Token } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -34,37 +34,35 @@ export class DockerImageDeployment extends Construct {
     });
 
     const sourceConfig = props.source.bind(this, { handlerRole });
-    props.destination.bind(handlerRole);
+    const destinationConfig = props.destination.bind(handlerRole);
 
     const sourceUri = sourceConfig.imageUri;
 
-    const destTag = props.destination.config.destinationTag ?? sourceConfig.imageTag;
+    const destTag = destinationConfig.destinationTag ?? sourceConfig.imageTag;
     this.validateTag(destTag);
 
-    const destUri = `${props.destination.config.destinationUri}:${destTag}`;
+    const destUri = `${destinationConfig.destinationUri}:${destTag}`;
 
-    const accountId = Stack.of(this).account;
-    const region = Stack.of(this).region;
-
-    const sourceLoginCommands = [
-      `aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${region}.amazonaws.com`,
-    ];
-
-    const buildCommands = [
+    const commands = [
+      sourceConfig.loginConfig.loginCommand,
       `docker pull ${sourceUri}`,
       `docker tag ${sourceUri} ${destUri}`,
-      `docker push ${destUri}`,
     ];
+
+    if (sourceConfig.loginConfig.region !== destinationConfig.loginConfig.region || !sourceConfig.loginConfig.region) { // different regions or either undefined should logout and login
+      commands.push('docker logout');
+      commands.push(destinationConfig.loginConfig.loginCommand);
+    }
+
+    commands.push(`docker push ${destUri}`);
+    commands.push('docker logout');
 
     this.cb = new codebuild.Project(this, 'DockerImageDeployProject', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
-          pre_build: {
-            commands: sourceLoginCommands,
-          },
           build: {
-            commands: buildCommands,
+            commands: commands,
           },
         },
       }),
