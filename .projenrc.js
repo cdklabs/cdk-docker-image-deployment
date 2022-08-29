@@ -2,7 +2,7 @@ const { awscdk } = require('projen');
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
   authorAddress: 'https://aws.amazon.com/',
-  cdkVersion: '2.38.1',
+  cdkVersion: '2.24.0', // needed for node16
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
   repositoryUrl: 'git@github.com:cdklabs/cdk-docker-image-deployment.git',
@@ -34,4 +34,5 @@ const project = new awscdk.AwsCdkConstructLibrary({
     packageId: 'Cdklabs.CdkDockerImageDeployment',
   },
 });
+
 project.synth();
