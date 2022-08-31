@@ -3,7 +3,7 @@
   "description": "This module allows you to copy docker image assets to a repository you control. This can be necessary if you want to build a Docker image in one CDK app and consume it in a different app or outside the CDK.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:cdklabs/cdk-docker-image-deployment.git"
+    "url": "https://github.com/cdklabs/cdk-docker-image-deployment.git"
   },
   "scripts": {
     "build": "npx projen build",
@@ -80,6 +80,7 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/cdklabs/cdk-docker-image-deployment#readme",
   "version": "0.0.0",
   "jest": {
     "testMatch": [
