@@ -5,7 +5,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   cdkVersion: '2.24.0', // needed for node16
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
-  repositoryUrl: 'git@github.com:cdklabs/cdk-docker-image-deployment.git',
+  repositoryUrl: 'https://github.com/cdklabs/cdk-docker-image-deployment.git',
+  homepage: 'https://github.com/cdklabs/cdk-docker-image-deployment#readme',
   autoApproveUpgrades: true,
   autoApproveOptions: {
     allowedUsernames: ['cdklabs-automation'],

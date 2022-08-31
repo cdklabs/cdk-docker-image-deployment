@@ -5,7 +5,6 @@
     "type": "git",
     "url": "https://github.com/cdklabs/cdk-docker-image-deployment.git"
   },
-  "homepage": "https://github.com/cdklabs/cdk-docker-image-deployment#readme",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -81,6 +80,7 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/cdklabs/cdk-docker-image-deployment#readme",
   "version": "0.0.0",
   "jest": {
     "testMatch": [
