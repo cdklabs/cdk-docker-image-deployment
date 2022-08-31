@@ -19,7 +19,7 @@ jobs:
         with:
           ref: main
       - name: Allow docker commands
-        run: sudo chown superchain /var/run/docker.sock
+        run: id
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Upgrade dependencies
