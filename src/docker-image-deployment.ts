@@ -75,13 +75,13 @@ export class DockerImageDeployment extends Construct {
     });
 
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
-      entry: path.join(__dirname, 'codebuild-handler/index.ts'),
+      entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'onEventhandler',
       runtime: Runtime.NODEJS_16_X,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
-      entry: path.join(__dirname, 'codebuild-handler/index.ts'),
+      entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'isCompleteHandler',
       runtime: Runtime.NODEJS_16_X,
     });
