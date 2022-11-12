@@ -53,7 +53,7 @@
     "jest-junit": "^13",
     "jsii": "^1.71.0",
     "jsii-diff": "^1.71.0",
-    "jsii-docgen": "^7.0.144",
+    "jsii-docgen": "^7.0.145",
     "jsii-pacmak": "^1.71.0",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^16",
@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.108",
-    "aws-sdk": "^2.1252.0"
+    "aws-sdk": "^2.1253.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
