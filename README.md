@@ -18,7 +18,7 @@ new imagedeploy.DockerImageDeployment(this, 'ExampleImageDeploymentWithTag', {
   source: imagedeploy.Source.directory('path/to/directory'),
   destination: imagedeploy.Destination.ecr(repo, { 
     tag: 'myspecialtag',
-  });
+  }),
 });
 ```
 
