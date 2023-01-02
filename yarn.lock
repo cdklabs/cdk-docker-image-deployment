@@ -2668,9 +2668,9 @@ fast-memoize@^2.5.2:
   integrity sha512-Ue0LwpDYErFbmNnZSF0UH6eImUwDmogUO1jyE+JbN2gsQz/jICm1Ve7t9QT0rNSsfJt+Hs4/S3GnsDVjL4HVrw==
 
 fastq@^1.6.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.14.0.tgz#107f69d7295b11e0fccc264e1fc6389f623731ce"
-  integrity sha512-eR2D+V9/ExcbF9ls441yIuN6TI2ED1Y2ZcA5BmMtJsOkWOFRJQ0Jt0g1UwqXJJVAb+V+umH5Dfr8oh4EVP7VVg==
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.15.0.tgz#d04d07c6a2a68fe4599fea8d2e103a937fae6b3a"
+  integrity sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==
   dependencies:
     reusify "^1.0.4"
 
@@ -2910,9 +2910,9 @@ get-symbol-description@^1.0.0:
     get-intrinsic "^1.1.1"
 
 get-tsconfig@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/get-tsconfig/-/get-tsconfig-4.2.0.tgz#ff368dd7104dab47bf923404eb93838245c66543"
-  integrity sha512-X8u8fREiYOE6S8hLbq99PeykTDoLVnxvF4DjWKJmz9xy2nNRdUcV8ZN9tniJFeKyTU3qnC9lL8n4Chd6LmVKHg==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/get-tsconfig/-/get-tsconfig-4.3.0.tgz#4c26fae115d1050e836aea65d6fe56b507ee249b"
+  integrity sha512-YCcF28IqSay3fqpIu5y3Krg/utCBHBeoflkZyHj/QcqI2nrLPC3ZegS9CmIo+hJb8K7aiGsuUl7PwWVjNG2HQQ==
 
 git-raw-commits@^2.0.8:
   version "2.0.11"
@@ -4138,10 +4138,10 @@ jsii-diff@^1.72.0:
     log4js "^6.7.1"
     yargs "^16.2.0"
 
-jsii-docgen@^7.0.190:
-  version "7.0.190"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-7.0.190.tgz#c8a1da276e415924880fdadbc8008f680a782285"
-  integrity sha512-m5IZo+UCgVGMA8UEGSSGWwxKWoYSteEhPBC+LrP7tM1KLnc+a9aLvewbSvhdA/SyLRzk02ZTXirJ+UpmoI5Vvg==
+jsii-docgen@^7.0.191:
+  version "7.0.191"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-7.0.191.tgz#fb61b29250c9391dabb9f36684e88c1f7b6980ed"
+  integrity sha512-E4gsuLYS2hGvWwYv2jCS/HXnDQYnWmJjESyQk2/r4JAm5RnDarHdCMcyUuBonucaXv36c3d36EuArgrvIbyp7g==
   dependencies:
     "@jsii/spec" "^1.72.0"
     case "^1.6.3"
@@ -5275,10 +5275,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.65.77:
-  version "0.65.77"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.65.77.tgz#0f61537a023d82f84ce769c6a703e52702bdf664"
-  integrity sha512-ZyZ4XqM5LliRIKpccgkmEUps53Oiqp/c90LlhfhrE3etr7csJ7DovpqVWhsS0l2EWkz2V3O5rrAb5Q86h0t1sw==
+projen@^0.65.78:
+  version "0.65.78"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.65.78.tgz#68b879bfc00284f9e38855ff8da8f3ac4c0bf5a0"
+  integrity sha512-/vTVGMWT5kNdgAhPVy3Ye4+xIDXfl9wvwm+oTKtRPFQc17OC4JWdXVBw+PtmmlZ4o/a6Ho+JQ1e62BzLOGziuQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
