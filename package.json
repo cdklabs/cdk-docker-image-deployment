@@ -53,10 +53,10 @@
     "jest-junit": "^15",
     "jsii": "1.x",
     "jsii-diff": "^1.79.0",
-    "jsii-docgen": "^7.1.41",
+    "jsii-docgen": "^7.1.42",
     "jsii-pacmak": "^1.79.0",
     "npm-check-updates": "^16",
-    "projen": "^0.70.1",
+    "projen": "^0.70.4",
     "standard-version": "^9",
     "ts-jest": "^27",
     "typescript": "^4.9.5"
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.114",
-    "aws-sdk": "^2.1347.0"
+    "aws-sdk": "^2.1348.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
