@@ -53,7 +53,18 @@ export abstract class Source {
    * @param path - path to the directory containing your Dockerfile (not a path to a file)
    */
   public static directory(path: string): Source {
-    return new DirectorySource(path);
+    return new DockerImageAssetPropsSource({ directory: path });
+  }
+
+  /**
+   * Uses a local image built from a Dockerfile in a local directory as the source.
+   *
+   * @param dockerImageAssetProps - everything from [DockerImageAssetProps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps.html)
+   */
+  public static dockerImageAssetProps(
+    dockerImageAssetProps: ecr_assets.DockerImageAssetProps,
+  ): Source {
+    return new DockerImageAssetPropsSource(dockerImageAssetProps);
   }
 
   /**
@@ -66,19 +77,20 @@ export abstract class Source {
 /**
  * Source of docker image deployment is a local image from a directory
  */
-class DirectorySource extends Source {
-  private path: string;
+class DockerImageAssetPropsSource extends Source {
+  private assetProps: ecr_assets.DockerImageAssetProps;
 
-  constructor(path: string) {
+  constructor(assetProps: ecr_assets.DockerImageAssetProps) {
     super();
-    this.path = path;
+    this.assetProps = assetProps;
   }
 
   public bind(scope: Construct, context: SourceContext): SourceConfig {
-
-    const asset = new ecr_assets.DockerImageAsset(scope, 'asset', {
-      directory: this.path,
-    });
+    const asset = new ecr_assets.DockerImageAsset(
+      scope,
+      'asset',
+      this.assetProps,
+    );
 
     const accountId = asset.repository.env.account;
     const region = asset.repository.env.region;

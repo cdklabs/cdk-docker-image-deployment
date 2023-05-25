@@ -583,6 +583,7 @@ Bind should be invoked by the caller to get the SourceConfig.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.Source.directory">directory</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
+| <code><a href="#cdk-docker-image-deployment.Source.dockerImageAssetProps">dockerImageAssetProps</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
 
 ---
 
@@ -601,6 +602,24 @@ Uses a local image built from a Dockerfile in a local directory as the source.
 - *Type:* string
 
 path to the directory containing your Dockerfile (not a path to a file).
+
+---
+
+##### `dockerImageAssetProps` <a name="dockerImageAssetProps" id="cdk-docker-image-deployment.Source.dockerImageAssetProps"></a>
+
+```typescript
+import { Source } from 'cdk-docker-image-deployment'
+
+Source.dockerImageAssetProps(dockerImageAssetProps: DockerImageAssetProps)
+```
+
+Uses a local image built from a Dockerfile in a local directory as the source.
+
+###### `dockerImageAssetProps`<sup>Required</sup> <a name="dockerImageAssetProps" id="cdk-docker-image-deployment.Source.dockerImageAssetProps.parameter.dockerImageAssetProps"></a>
+
+- *Type:* aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps
+
+everything from [DockerImageAssetProps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps.html).
 
 ---
 
