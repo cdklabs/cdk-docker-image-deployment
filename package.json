@@ -56,7 +56,7 @@
     "jsii-docgen": "^7.2.9",
     "jsii-pacmak": "^1.83.0",
     "npm-check-updates": "^16",
-    "projen": "^0.71.85",
+    "projen": "^0.71.87",
     "standard-version": "^9",
     "ts-jest": "^27",
     "typescript": "^4.9.5"
@@ -66,8 +66,8 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.116",
-    "aws-sdk": "^2.1393.0"
+    "@types/aws-lambda": "^8.10.117",
+    "aws-sdk": "^2.1394.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
