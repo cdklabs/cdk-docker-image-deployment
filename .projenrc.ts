@@ -1,10 +1,11 @@
-const { awscdk } = require('projen');
+import { awscdk } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
   authorAddress: 'https://aws.amazon.com/',
   cdkVersion: '2.24.0', // needed for node16
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
+  projenrcTs: true,
   repositoryUrl: 'https://github.com/cdklabs/cdk-docker-image-deployment.git',
   homepage: 'https://github.com/cdklabs/cdk-docker-image-deployment#readme',
   autoApproveUpgrades: true,
