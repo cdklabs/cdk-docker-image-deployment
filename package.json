@@ -52,11 +52,11 @@
     "jest": "^27",
     "jest-junit": "^15",
     "jsii": "1.x",
-    "jsii-diff": "^1.83.0",
+    "jsii-diff": "^1.84.0",
     "jsii-docgen": "^7.2.9",
-    "jsii-pacmak": "^1.83.0",
+    "jsii-pacmak": "^1.84.0",
     "npm-check-updates": "^16",
-    "projen": "^0.71.94",
+    "projen": "^0.71.96",
     "standard-version": "^9",
     "ts-jest": "^27",
     "ts-node": "^10.9.1",
@@ -67,7 +67,7 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.117",
+    "@types/aws-lambda": "^8.10.119",
     "aws-sdk": "^2.1397.0"
   },
   "bundledDependencies": [
