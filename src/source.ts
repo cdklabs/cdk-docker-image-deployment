@@ -80,7 +80,7 @@ export abstract class Source {
 class DirectorySource extends Source {
   private assetProps: ecr_assets.DockerImageAssetProps;
 
-  constructor(assetProps: ecr_assets.DockerImageAssetProps) {
+  constructor(path: string, assetOptions?: ecr_assets.DockerImageAssetOptions) {
     super();
     this.assetProps = assetProps;
   }
