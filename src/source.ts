@@ -89,11 +89,7 @@ class DirectorySource extends Source {
   }
 
   public bind(scope: Construct, context: SourceContext): SourceConfig {
-    const asset = new ecr_assets.DockerImageAsset(
-      scope,
-      'asset',
-      this.assetProps,
-    );
+    const asset = new ecr_assets.DockerImageAsset(scope, 'asset', this.assetProps);
 
     const accountId = asset.repository.env.account;
     const region = asset.repository.env.region;
