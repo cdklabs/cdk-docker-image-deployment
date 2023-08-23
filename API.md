@@ -534,6 +534,17 @@ import * as path from 'path';
 const path = path.join(__dirname, 'path/to/directory');
 const sourceDirectory = Source.directory(path);
 ```
+or
+```ts
+import * as path from 'path';
+const path = path.join(__dirname, 'path/to/directory');
+const sourceDirectory = Source.directory(path, {
+   file: 'Dockerfile.api',
+   buildArgs: {
+     HTTP_PROXY: 'http://10.20.30.2:1234'
+   }
+})
+```
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Source.Initializer"></a>
 
@@ -583,7 +594,6 @@ Bind should be invoked by the caller to get the SourceConfig.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.Source.directory">directory</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
-| <code><a href="#cdk-docker-image-deployment.Source.dockerImageAssetProps">dockerImageAssetProps</a></code> | Uses a local image built from a Dockerfile in a local directory as the source. |
 
 ---
 
@@ -592,7 +602,7 @@ Bind should be invoked by the caller to get the SourceConfig.
 ```typescript
 import { Source } from 'cdk-docker-image-deployment'
 
-Source.directory(path: string)
+Source.directory(path: string, assetOptions?: DockerImageAssetOptions)
 ```
 
 Uses a local image built from a Dockerfile in a local directory as the source.
@@ -605,21 +615,11 @@ path to the directory containing your Dockerfile (not a path to a file).
 
 ---
 
-##### `dockerImageAssetProps` <a name="dockerImageAssetProps" id="cdk-docker-image-deployment.Source.dockerImageAssetProps"></a>
+###### `assetOptions`<sup>Optional</sup> <a name="assetOptions" id="cdk-docker-image-deployment.Source.directory.parameter.assetOptions"></a>
 
-```typescript
-import { Source } from 'cdk-docker-image-deployment'
+- *Type:* aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions
 
-Source.dockerImageAssetProps(dockerImageAssetProps: DockerImageAssetProps)
-```
-
-Uses a local image built from a Dockerfile in a local directory as the source.
-
-###### `dockerImageAssetProps`<sup>Required</sup> <a name="dockerImageAssetProps" id="cdk-docker-image-deployment.Source.dockerImageAssetProps.parameter.dockerImageAssetProps"></a>
-
-- *Type:* aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps
-
-everything from [DockerImageAssetProps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps.html).
+specify any additional [DockerImageAssetOptions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions.html) (expect `path`).
 
 ---
 
