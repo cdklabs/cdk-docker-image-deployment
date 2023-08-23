@@ -82,7 +82,10 @@ class DirectorySource extends Source {
 
   constructor(path: string, assetOptions?: ecr_assets.DockerImageAssetOptions) {
     super();
-    this.assetProps = assetProps;
+    this.assetProps = {
+      directory: path,
+      ...assetOptions,
+    };
   }
 
   public bind(scope: Construct, context: SourceContext): SourceConfig {
