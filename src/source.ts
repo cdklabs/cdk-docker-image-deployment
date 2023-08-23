@@ -77,7 +77,7 @@ export abstract class Source {
 /**
  * Source of docker image deployment is a local image from a directory
  */
-class DockerImageAssetPropsSource extends Source {
+class DirectorySource extends Source {
   private assetProps: ecr_assets.DockerImageAssetProps;
 
   constructor(assetProps: ecr_assets.DockerImageAssetProps) {
