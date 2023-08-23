@@ -52,19 +52,11 @@ export abstract class Source {
    *
    * @param path - path to the directory containing your Dockerfile (not a path to a file)
    */
-  public static directory(path: string, assetOptions?: ecr_assets.DockerImageAssetOptions): Source {
-    return new DockerImageAssetPropsSource({ directory: path });
-  }
-
-  /**
-   * Uses a local image built from a Dockerfile in a local directory as the source.
-   *
-   * @param dockerImageAssetProps - everything from [DockerImageAssetProps](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetProps.html)
-   */
-  public static dockerImageAssetProps(
-    dockerImageAssetProps: ecr_assets.DockerImageAssetProps,
+  public static directory(
+    path: string,
+    assetOptions?: ecr_assets.DockerImageAssetOptions,
   ): Source {
-    return new DockerImageAssetPropsSource(dockerImageAssetProps);
+    return new DirectorySource(path, assetOptions);
   }
 
   /**
