@@ -52,7 +52,7 @@ export abstract class Source {
    *
    * @param path - path to the directory containing your Dockerfile (not a path to a file)
    */
-  public static directory(path: string): Source {
+  public static directory(path: string, assetOptions?: ecr_assets.DockerImageAssetOptions): Source {
     return new DockerImageAssetPropsSource({ directory: path });
   }
 
