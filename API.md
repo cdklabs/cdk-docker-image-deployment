@@ -534,6 +534,17 @@ import * as path from 'path';
 const path = path.join(__dirname, 'path/to/directory');
 const sourceDirectory = Source.directory(path);
 ```
+or with additional `assetOptions`
+```ts
+import * as path from 'path';
+const path = path.join(__dirname, 'path/to/directory');
+const sourceDirectory = Source.directory(path, {
+   file: 'Dockerfile.api',
+   buildArgs: {
+     HTTP_PROXY: 'http://10.20.30.2:1234'
+   }
+})
+```
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.Source.Initializer"></a>
 
@@ -591,7 +602,7 @@ Bind should be invoked by the caller to get the SourceConfig.
 ```typescript
 import { Source } from 'cdk-docker-image-deployment'
 
-Source.directory(path: string)
+Source.directory(path: string, assetOptions?: DockerImageAssetOptions)
 ```
 
 Uses a local image built from a Dockerfile in a local directory as the source.
@@ -601,6 +612,14 @@ Uses a local image built from a Dockerfile in a local directory as the source.
 - *Type:* string
 
 path to the directory containing your Dockerfile (not a path to a file).
+
+---
+
+###### `assetOptions`<sup>Optional</sup> <a name="assetOptions" id="cdk-docker-image-deployment.Source.directory.parameter.assetOptions"></a>
+
+- *Type:* aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions
+
+specify any additional [DockerImageAssetOptions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions.html) (except `path`).
 
 ---
 
