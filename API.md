@@ -534,7 +534,7 @@ import * as path from 'path';
 const path = path.join(__dirname, 'path/to/directory');
 const sourceDirectory = Source.directory(path);
 ```
-or
+or with additional `assetOptions`
 ```ts
 import * as path from 'path';
 const path = path.join(__dirname, 'path/to/directory');
@@ -619,7 +619,7 @@ path to the directory containing your Dockerfile (not a path to a file).
 
 - *Type:* aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions
 
-specify any additional [DockerImageAssetOptions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions.html) (expect `path`).
+specify any additional [DockerImageAssetOptions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr_assets.DockerImageAssetOptions.html) (except `path`).
 
 ---
 
