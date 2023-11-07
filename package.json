@@ -57,7 +57,7 @@
     "jsii-pacmak": "^1.91.0",
     "jsii-rosetta": "1.x",
     "npm-check-updates": "^16",
-    "projen": "^0.76.20",
+    "projen": "^0.76.23",
     "standard-version": "^9",
     "ts-jest": "^27",
     "ts-node": "^10.9.1",
@@ -68,8 +68,8 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.125",
-    "aws-sdk": "^2.1488.0"
+    "@types/aws-lambda": "^8.10.126",
+    "aws-sdk": "^2.1489.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
