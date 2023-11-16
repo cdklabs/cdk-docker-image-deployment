@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.126",
-    "aws-sdk": "^2.1496.0"
+    "aws-sdk": "^2.1497.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
