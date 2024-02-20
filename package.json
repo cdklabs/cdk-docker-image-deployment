@@ -44,7 +44,7 @@
     "@typescript-eslint/parser": "^6",
     "aws-cdk-lib": "2.24.0",
     "constructs": "10.0.5",
-    "esbuild": "^0.20.0",
+    "esbuild": "^0.20.1",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
@@ -55,7 +55,7 @@
     "jsii-docgen": "^7.2.9",
     "jsii-pacmak": "^1.94.0",
     "jsii-rosetta": "1.x",
-    "projen": "^0.79.24",
+    "projen": "^0.79.27",
     "standard-version": "^9",
     "ts-jest": "^27",
     "ts-node": "^10.9.2",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.134",
-    "aws-sdk": "^2.1560.0"
+    "aws-sdk": "^2.1561.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
