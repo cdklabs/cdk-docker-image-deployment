@@ -1305,10 +1305,10 @@ aws-cdk-lib@2.24.0:
     semver "^7.3.7"
     yaml "1.10.2"
 
-aws-sdk@^2.1605.0:
-  version "2.1605.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1605.0.tgz#8ba2c5bd4b43c9b95dd63d6916916a2dcd92abbd"
-  integrity sha512-/wtOuF7WgkbN6YL3xJ+FB54kvIAfnP/DQVDaE6rSYv6ft0xr01Si94NgQWhb5OcFkFfRAC4auZX8PiFNtOi9xQ==
+aws-sdk@^2.1606.0:
+  version "2.1606.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1606.0.tgz#617b2afc5955aca4ac42c6ef6f5b649cbd36b3b1"
+  integrity sha512-Sg1y0p93XI0ce86D9mi402sKMiH7LDoq6k3YzMja9yA0i3i0Pg3py4jjZ7p3HlKNOsDUF0t+9DLdCjtbTbuM6w==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -2070,9 +2070,9 @@ dotgitignore@^2.1.0:
     minimatch "^3.0.4"
 
 electron-to-chromium@^1.4.668:
-  version "1.4.747"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.747.tgz#e37fa5b7b7e4c22607c5f59b5cf78f947266e77d"
-  integrity sha512-+FnSWZIAvFHbsNVmUxhEqWiaOiPMcfum1GQzlWCg/wLigVtshOsjXHyEFfmt6cFK6+HkS3QOJBv6/3OPumbBfw==
+  version "1.4.748"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.748.tgz#aa7d4f2f3eac3a6a863cd1779bd4682b4bb68ed5"
+  integrity sha512-VWqjOlPZn70UZ8FTKUOkUvBLeTQ0xpty66qV0yJcAGY2/CthI4xyW9aEozRVtuwv3Kpf5xTesmJUcPwuJmgP4A==
 
 emittery@^0.8.1:
   version "0.8.1"
