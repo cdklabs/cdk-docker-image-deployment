@@ -12,7 +12,7 @@ Below is a basic example for how to use the `DockerImageDeployment` API:
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import * as imagedeploy from 'cdk-docker-image-deployment';
 
-const repo = new ecr.Repository.fromRepositoryName(this, 'MyRepository', 'myrepository');
+const repo = ecr.Repository.fromRepositoryName(this, 'MyRepository', 'myrepository');
 
 new imagedeploy.DockerImageDeployment(this, 'ExampleImageDeploymentWithTag', {
   source: imagedeploy.Source.directory('path/to/directory'),
