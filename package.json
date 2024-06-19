@@ -66,8 +66,8 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.139",
-    "aws-sdk": "^2.1643.0"
+    "@types/aws-lambda": "^8.10.140",
+    "aws-sdk": "^2.1644.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
