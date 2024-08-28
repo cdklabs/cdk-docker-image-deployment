@@ -52,11 +52,11 @@
     "jest": "^27",
     "jest-junit": "^15",
     "jsii": "1.x",
-    "jsii-diff": "^1.102.0",
+    "jsii-diff": "^1.103.0",
     "jsii-docgen": "^10.5.0",
-    "jsii-pacmak": "^1.102.0",
+    "jsii-pacmak": "^1.103.0",
     "jsii-rosetta": "1.x",
-    "projen": "^0.86.4",
+    "projen": "^0.86.5",
     "ts-jest": "^27",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
@@ -66,8 +66,8 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.143",
-    "aws-sdk": "^2.1683.0"
+    "@types/aws-lambda": "^8.10.144",
+    "aws-sdk": "^2.1684.0"
   },
   "bundledDependencies": [
     "@types/aws-lambda",
