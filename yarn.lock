@@ -811,10 +811,10 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
-"@types/aws-lambda@^8.10.144":
-  version "8.10.144"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.144.tgz#4c9dfed39a41bf92eea0b8ad7bb087dcc0b5864b"
-  integrity sha512-zRN25EUlALZsDlFfFCFEkQYXWj2WWu69pDBTycrsoFE+cS0XEs8vpFlSrq/L8OoJsrMW12LZtpvDHIGwGkQ2yg==
+"@types/aws-lambda@^8.10.145":
+  version "8.10.145"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.145.tgz#b2d31a987f4888e5553ff1819f57cafa475594d9"
+  integrity sha512-dtByW6WiFk5W5Jfgz1VM+YPA21xMXTuSFoLYIDY0L44jDLLflVPtZkYuu3/YxpGcvjzKFBZLU+GyKjR0HOYtyw==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.20.5"
@@ -894,9 +894,9 @@
   integrity sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==
 
 "@types/node@*":
-  version "22.5.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.0.tgz#10f01fe9465166b4cab72e75f60d8b99d019f958"
-  integrity sha512-DkFrJOe+rfdHTqqMg0bSNlGlQ85hSoh2TPzZyhHsXnMtligRWpxUySiyw8FY14ITt24HVCiQPWxS3KO/QlGmWg==
+  version "22.5.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.1.tgz#de01dce265f6b99ed32b295962045d10b5b99560"
+  integrity sha512-KkHsxej0j9IW1KKOOAA/XBA0z08UFSrRQHErzEfA3Vgq57eXIMYboIlHJuYIfd+lwCQjtKqUu3UnmKbtUc9yRw==
   dependencies:
     undici-types "~6.19.2"
 
@@ -1284,10 +1284,10 @@ aws-cdk-lib@2.24.0:
     semver "^7.3.7"
     yaml "1.10.2"
 
-aws-sdk@^2.1684.0:
-  version "2.1684.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1684.0.tgz#1f3423369fabd764e66525cb01e649024d094379"
-  integrity sha512-Womhydf2UhEeLALLOUEDIuJ1Iv2k9aOsqAeDaQT3AhayiYt7pguvncs5IgEAxZ0TRH7driA7kTk+iGnCP2jMMA==
+aws-sdk@^2.1685.0:
+  version "2.1685.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1685.0.tgz#906d2a5d06a99ac288c9138f0bb6a7e3932e7da4"
+  integrity sha512-axo1by16nZXqHAFu65+/pLnqqaU3ez5ko3jTGDt0byafT7XD948z3WqqrXWT9vJTUF93DdTZ9DEcazj4Ai91cQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
