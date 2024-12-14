@@ -389,7 +389,7 @@ Usage:
 ```ts
 declare const repo: ecr.IRepository;
 const destinationEcr = dockerDeploy.Destination.ecr(repository, {
-   tag: 'tag',
+  tag: 'tag',
 });
 ```
 
@@ -478,10 +478,10 @@ or with additional `assetOptions`
 import * as path from 'path';
 const path = path.join(__dirname, 'path/to/directory');
 const sourceDirectory = Source.directory(path, {
-   file: 'Dockerfile.api',
-   buildArgs: {
-     HTTP_PROXY: 'http://10.20.30.2:1234'
-   }
+  file: 'Dockerfile.api',
+  buildArgs: {
+    HTTP_PROXY: 'http://10.20.30.2:1234'
+  }
 })
 ```
 
