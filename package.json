@@ -48,7 +48,7 @@
     "constructs": "10.0.5",
     "esbuild": "^0.25.1",
     "eslint": "^9",
-    "eslint-import-resolver-typescript": "^3.8.7",
+    "eslint-import-resolver-typescript": "^3.9.0",
     "eslint-plugin-import": "^2.31.0",
     "jest": "^27",
     "jest-junit": "^16",
