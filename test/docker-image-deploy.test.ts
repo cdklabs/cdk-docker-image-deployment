@@ -6,10 +6,9 @@ import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../lib/index';
 
 describe('DockerImageDeploy', () => {
-  // GIVEN
-  const stack = new cdk.Stack();
   describe('Source: directory', () => {
     // GIVEN
+    const stack = new cdk.Stack();
     const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
 
     describe('Destination: ecr', () => {
@@ -80,21 +79,10 @@ describe('DockerImageDeploy', () => {
                   'ecr:BatchCheckLayerAvailability',
                   'ecr:GetDownloadUrlForLayer',
                   'ecr:BatchGetImage',
-                ],
-                Effect: 'Allow',
-                Resource: {
-                  'Fn::GetAtt': [
-                    'TestRepositoryC0DA8195',
-                    'Arn',
-                  ],
-                },
-              },
-              {
-                Action: [
-                  'ecr:PutImage',
-                  'ecr:InitiateLayerUpload',
-                  'ecr:UploadLayerPart',
                   'ecr:CompleteLayerUpload',
+                  'ecr:UploadLayerPart',
+                  'ecr:InitiateLayerUpload',
+                  'ecr:PutImage',
                 ],
                 Effect: 'Allow',
                 Resource: {
@@ -335,10 +323,54 @@ describe('DockerImageDeploy', () => {
         },
       });
     });
+
+    describe('Custom Resrouces', () => {
+      test('onEventHandler has correct permissions', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+          PolicyDocument: {
+            Statement: Match.arrayWith([
+              {
+                Action: 'codebuild:StartBuild',
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::GetAtt': [
+                    'TestDeploymentDockerImageDeployProject0884B3B5',
+                    'Arn',
+                  ],
+                },
+              },
+            ]),
+          },
+        });
+      });
+
+      test('isCompleteHandler has correct permissions', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+          PolicyDocument: {
+            Statement: Match.arrayWith([
+              {
+                Action: [
+                  'codebuild:ListBuildsForProject',
+                  'codebuild:BatchGetBuilds',
+                ],
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::GetAtt': [
+                    'TestDeploymentDockerImageDeployProject0884B3B5',
+                    'Arn',
+                  ],
+                },
+              },
+            ]),
+          },
+        });
+      });
+    });
   });
 
   describe('Tag validation', () => {
     // GIVEN
+    const stack = new cdk.Stack();
     const repo = new ecr.Repository(stack, 'TestTagsRepository');
     const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
 
@@ -409,46 +441,5 @@ describe('DockerImageDeploy', () => {
     });
   });
 
-  describe('Custom Resrouces', () => {
-    test('onEventHandler has correct permissions', () => {
-      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
-        PolicyDocument: {
-          Statement: Match.arrayWith([
-            {
-              Action: 'codebuild:StartBuild',
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  'TestDeploymentDockerImageDeployProject0884B3B5',
-                  'Arn',
-                ],
-              },
-            },
-          ]),
-        },
-      });
-    });
 
-    test('isCompleteHandler has correct permissions', () => {
-      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
-        PolicyDocument: {
-          Statement: Match.arrayWith([
-            {
-              Action: [
-                'codebuild:ListBuildsForProject',
-                'codebuild:BatchGetBuilds',
-              ],
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  'TestDeploymentDockerImageDeployProject0884B3B5',
-                  'Arn',
-                ],
-              },
-            },
-          ]),
-        },
-      });
-    });
-  });
 });
