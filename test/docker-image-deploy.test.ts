@@ -2,6 +2,7 @@
 import * as path from 'path';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../lib/index';
 
@@ -33,6 +34,15 @@ describe('DockerImageDeploy', () => {
         source: testSource,
         destination: testDesinationNoOptions,
       });
+
+      new imagedeploy.DockerImageDeployment(stack, 'TestDeploymentWithLogGroup', {
+        source: testSource,
+        destination: testDesination,
+        crProviderLogGroup: new logs.LogGroup(stack, 'CrProviderLogGroup', { retention: logs.RetentionDays.ONE_DAY }),
+        onEventHandlerLogGroup: new logs.LogGroup(stack, 'OnEventLogGroup', { retention: logs.RetentionDays.FIVE_DAYS }),
+        isCompleteHandlerLogGroup: new logs.LogGroup(stack, 'IsCompleteLogGroup', { retention: logs.RetentionDays.ONE_WEEK }),
+        crWaiterStateMachineLogOptions: { destination: new logs.LogGroup(stack, 'WaiterSfnLogGroup', { retention: logs.RetentionDays.ONE_MONTH }) },
+      } );
 
       test('iam policy is granted correct permissions', () => {
         Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
@@ -362,6 +372,59 @@ describe('DockerImageDeploy', () => {
                 },
               },
             ]),
+          },
+        });
+      });
+
+      test('deploy with onEventhandler log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          Handler: 'index.onEventhandler',
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'OnEventLogGroup5AB79325',
+            },
+          },
+        });
+      });
+
+      test('deploy with onEventhandler log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          Handler: 'index.isCompleteHandler',
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'IsCompleteLogGroupE01E0185',
+            },
+          },
+        });
+      });
+
+      test('deploy with CRProvider log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'CrProviderLogGroup33080E63',
+            },
+          },
+        });
+      });
+
+      test('deploy with WaiterStateMachine log options', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::StepFunctions::StateMachine', {
+          LoggingConfiguration: {
+            Destinations: [
+              {
+                CloudWatchLogsLogGroup: {
+                  LogGroupArn: {
+                    'Fn::GetAtt': [
+                      'TestDeploymentCRProviderwaiterstatemachineLogGroupC06C22F6',
+                      'Arn',
+                    ],
+                  },
+                },
+              },
+            ],
+            IncludeExecutionData: false,
+            Level: 'ERROR',
           },
         });
       });
