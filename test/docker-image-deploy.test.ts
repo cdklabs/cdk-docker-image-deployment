@@ -2,14 +2,14 @@
 import * as path from 'path';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../lib/index';
 
 describe('DockerImageDeploy', () => {
-  // GIVEN
-  const stack = new cdk.Stack();
   describe('Source: directory', () => {
     // GIVEN
+    const stack = new cdk.Stack();
     const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
 
     describe('Destination: ecr', () => {
@@ -34,6 +34,15 @@ describe('DockerImageDeploy', () => {
         source: testSource,
         destination: testDesinationNoOptions,
       });
+
+      new imagedeploy.DockerImageDeployment(stack, 'TestDeploymentWithLogGroup', {
+        source: testSource,
+        destination: testDesination,
+        crProviderLogGroup: new logs.LogGroup(stack, 'CrProviderLogGroup', { retention: logs.RetentionDays.ONE_DAY }),
+        onEventHandlerLogGroup: new logs.LogGroup(stack, 'OnEventLogGroup', { retention: logs.RetentionDays.FIVE_DAYS }),
+        isCompleteHandlerLogGroup: new logs.LogGroup(stack, 'IsCompleteLogGroup', { retention: logs.RetentionDays.ONE_WEEK }),
+        crWaiterStateMachineLogOptions: { destination: new logs.LogGroup(stack, 'WaiterSfnLogGroup', { retention: logs.RetentionDays.ONE_MONTH }) },
+      } );
 
       test('iam policy is granted correct permissions', () => {
         Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
@@ -80,21 +89,10 @@ describe('DockerImageDeploy', () => {
                   'ecr:BatchCheckLayerAvailability',
                   'ecr:GetDownloadUrlForLayer',
                   'ecr:BatchGetImage',
-                ],
-                Effect: 'Allow',
-                Resource: {
-                  'Fn::GetAtt': [
-                    'TestRepositoryC0DA8195',
-                    'Arn',
-                  ],
-                },
-              },
-              {
-                Action: [
-                  'ecr:PutImage',
-                  'ecr:InitiateLayerUpload',
-                  'ecr:UploadLayerPart',
                   'ecr:CompleteLayerUpload',
+                  'ecr:UploadLayerPart',
+                  'ecr:InitiateLayerUpload',
+                  'ecr:PutImage',
                 ],
                 Effect: 'Allow',
                 Resource: {
@@ -335,10 +333,107 @@ describe('DockerImageDeploy', () => {
         },
       });
     });
+
+    describe('Custom Resrouces', () => {
+      test('onEventHandler has correct permissions', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+          PolicyDocument: {
+            Statement: Match.arrayWith([
+              {
+                Action: 'codebuild:StartBuild',
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::GetAtt': [
+                    'TestDeploymentDockerImageDeployProject0884B3B5',
+                    'Arn',
+                  ],
+                },
+              },
+            ]),
+          },
+        });
+      });
+
+      test('isCompleteHandler has correct permissions', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
+          PolicyDocument: {
+            Statement: Match.arrayWith([
+              {
+                Action: [
+                  'codebuild:ListBuildsForProject',
+                  'codebuild:BatchGetBuilds',
+                ],
+                Effect: 'Allow',
+                Resource: {
+                  'Fn::GetAtt': [
+                    'TestDeploymentDockerImageDeployProject0884B3B5',
+                    'Arn',
+                  ],
+                },
+              },
+            ]),
+          },
+        });
+      });
+
+      test('deploy with onEventhandler log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          Handler: 'index.onEventhandler',
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'OnEventLogGroup5AB79325',
+            },
+          },
+        });
+      });
+
+      test('deploy with onEventhandler log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          Handler: 'index.isCompleteHandler',
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'IsCompleteLogGroupE01E0185',
+            },
+          },
+        });
+      });
+
+      test('deploy with CRProvider log group', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+          LoggingConfig: {
+            LogGroup: {
+              Ref: 'CrProviderLogGroup33080E63',
+            },
+          },
+        });
+      });
+
+      test('deploy with WaiterStateMachine log options', () => {
+        Template.fromStack(stack).hasResourceProperties('AWS::StepFunctions::StateMachine', {
+          LoggingConfiguration: {
+            Destinations: [
+              {
+                CloudWatchLogsLogGroup: {
+                  LogGroupArn: {
+                    'Fn::GetAtt': [
+                      'TestDeploymentCRProviderwaiterstatemachineLogGroupC06C22F6',
+                      'Arn',
+                    ],
+                  },
+                },
+              },
+            ],
+            IncludeExecutionData: false,
+            Level: 'ERROR',
+          },
+        });
+      });
+    });
   });
 
   describe('Tag validation', () => {
     // GIVEN
+    const stack = new cdk.Stack();
     const repo = new ecr.Repository(stack, 'TestTagsRepository');
     const testSource = imagedeploy.Source.directory(path.join(__dirname, 'assets/test1'));
 
@@ -409,46 +504,5 @@ describe('DockerImageDeploy', () => {
     });
   });
 
-  describe('Custom Resrouces', () => {
-    test('onEventHandler has correct permissions', () => {
-      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
-        PolicyDocument: {
-          Statement: Match.arrayWith([
-            {
-              Action: 'codebuild:StartBuild',
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  'TestDeploymentDockerImageDeployProject0884B3B5',
-                  'Arn',
-                ],
-              },
-            },
-          ]),
-        },
-      });
-    });
 
-    test('isCompleteHandler has correct permissions', () => {
-      Template.fromStack(stack).hasResourceProperties('AWS::IAM::Policy', {
-        PolicyDocument: {
-          Statement: Match.arrayWith([
-            {
-              Action: [
-                'codebuild:ListBuildsForProject',
-                'codebuild:BatchGetBuilds',
-              ],
-              Effect: 'Allow',
-              Resource: {
-                'Fn::GetAtt': [
-                  'TestDeploymentDockerImageDeployProject0884B3B5',
-                  'Arn',
-                ],
-              },
-            },
-          ]),
-        },
-      });
-    });
-  });
 });

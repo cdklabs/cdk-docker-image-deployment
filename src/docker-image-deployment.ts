@@ -4,6 +4,8 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import * as lambda from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import { LogOptions } from 'aws-cdk-lib/aws-stepfunctions';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { Destination } from './destination';
@@ -19,6 +21,30 @@ export interface DockerImageDeploymentProps {
    * Destination repository to deploy the image to.
    */
   readonly destination: Destination;
+  /**
+   * The Log Group used for logging of events emitted by the custom resource's lambda function.
+   *
+   * @default - a default log group created by AWS Lambda
+   */
+  readonly crProviderLogGroup?: logs.ILogGroup;
+  /**
+   * The Log Group used for logging of events emitted by the custom resource's onEventHandler lambda function.
+   *
+   * @default - a default log group created by AWS Lambda
+   */
+  readonly onEventHandlerLogGroup?: logs.ILogGroup;
+  /**
+   * The Log Group used for logging of events emitted by the custom resource's isCompleteHandler lambda function.
+   *
+   * @default - a default log group created by AWS Lambda
+   */
+  readonly isCompleteHandlerLogGroup?: logs.ILogGroup;
+  /**
+   * The Log Option used for logging of events emitted by the custom resource's  waiter state machine.
+   *
+   * @default - A default log group will be created if logging for the waiter state machine is enabled.
+   */
+  readonly crWaiterStateMachineLogOptions?: LogOptions;
 }
 
 /**
@@ -78,12 +104,14 @@ export class DockerImageDeployment extends Construct {
       entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'onEventhandler',
       runtime: Runtime.NODEJS_16_X,
+      logGroup: props.onEventHandlerLogGroup,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
       entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'isCompleteHandler',
       runtime: Runtime.NODEJS_16_X,
+      logGroup: props.isCompleteHandlerLogGroup,
     });
 
     // https://github.com/aws/aws-cdk/issues/21721 issue to add grant methods to codebuild
@@ -109,6 +137,8 @@ export class DockerImageDeployment extends Construct {
       isCompleteHandler: isCompleteHandler,
       queryInterval: Duration.seconds(30),
       totalTimeout: Duration.minutes(30),
+      logGroup: props.crProviderLogGroup,
+      waiterStateMachineLogOptions: props.crWaiterStateMachineLogOptions,
     });
 
     const customResource = new CustomResource(this, `CustomResource${Date.now().toString()}`, {

@@ -180,6 +180,10 @@ const dockerImageDeploymentProps: DockerImageDeploymentProps = { ... }
 | --- | --- | --- |
 | <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.destination">destination</a></code> | <code><a href="#cdk-docker-image-deployment.Destination">Destination</a></code> | Destination repository to deploy the image to. |
 | <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.source">source</a></code> | <code><a href="#cdk-docker-image-deployment.Source">Source</a></code> | Source of the image to deploy. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.crProviderLogGroup">crProviderLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group used for logging of events emitted by the custom resource's lambda function. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.crWaiterStateMachineLogOptions">crWaiterStateMachineLogOptions</a></code> | <code>aws-cdk-lib.aws_stepfunctions.LogOptions</code> | The Log Option used for logging of events emitted by the custom resource's  waiter state machine. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.isCompleteHandlerLogGroup">isCompleteHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group used for logging of events emitted by the custom resource's isCompleteHandler lambda function. |
+| <code><a href="#cdk-docker-image-deployment.DockerImageDeploymentProps.property.onEventHandlerLogGroup">onEventHandlerLogGroup</a></code> | <code>aws-cdk-lib.aws_logs.ILogGroup</code> | The Log Group used for logging of events emitted by the custom resource's onEventHandler lambda function. |
 
 ---
 
@@ -204,6 +208,58 @@ public readonly source: Source;
 - *Type:* <a href="#cdk-docker-image-deployment.Source">Source</a>
 
 Source of the image to deploy.
+
+---
+
+##### `crProviderLogGroup`<sup>Optional</sup> <a name="crProviderLogGroup" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.crProviderLogGroup"></a>
+
+```typescript
+public readonly crProviderLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+- *Default:* a default log group created by AWS Lambda
+
+The Log Group used for logging of events emitted by the custom resource's lambda function.
+
+---
+
+##### `crWaiterStateMachineLogOptions`<sup>Optional</sup> <a name="crWaiterStateMachineLogOptions" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.crWaiterStateMachineLogOptions"></a>
+
+```typescript
+public readonly crWaiterStateMachineLogOptions: LogOptions;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.LogOptions
+- *Default:* A default log group will be created if logging for the waiter state machine is enabled.
+
+The Log Option used for logging of events emitted by the custom resource's  waiter state machine.
+
+---
+
+##### `isCompleteHandlerLogGroup`<sup>Optional</sup> <a name="isCompleteHandlerLogGroup" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.isCompleteHandlerLogGroup"></a>
+
+```typescript
+public readonly isCompleteHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+- *Default:* a default log group created by AWS Lambda
+
+The Log Group used for logging of events emitted by the custom resource's isCompleteHandler lambda function.
+
+---
+
+##### `onEventHandlerLogGroup`<sup>Optional</sup> <a name="onEventHandlerLogGroup" id="cdk-docker-image-deployment.DockerImageDeploymentProps.property.onEventHandlerLogGroup"></a>
+
+```typescript
+public readonly onEventHandlerLogGroup: ILogGroup;
+```
+
+- *Type:* aws-cdk-lib.aws_logs.ILogGroup
+- *Default:* a default log group created by AWS Lambda
+
+The Log Group used for logging of events emitted by the custom resource's onEventHandler lambda function.
 
 ---
 
