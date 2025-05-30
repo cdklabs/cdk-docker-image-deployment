@@ -25,7 +25,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     javaPackage: 'io.github.cdklabs.cdk.docker.image.deployment',
     mavenGroupId: 'io.github.cdklabs',
     mavenArtifactId: 'cdk-docker-image-deployment',
-    mavenEndpoint: 'https://s01.oss.sonatype.org',
+    mavenServerId: 'central-ossrh',
   },
   publishToNuget: {
     dotNetNamespace: 'Cdklabs.CdkDockerImageDeployment',
