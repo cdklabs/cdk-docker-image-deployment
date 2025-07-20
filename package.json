@@ -46,7 +46,7 @@
     "aws-cdk-lib": "2.24.0",
     "commit-and-tag-version": "^12",
     "constructs": "10.0.5",
-    "esbuild": "^0.25.7",
+    "esbuild": "^0.25.8",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^3.10.1",
     "eslint-plugin-import": "^2.32.0",
@@ -67,7 +67,7 @@
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.150",
+    "@types/aws-lambda": "^8.10.152",
     "aws-sdk": "^2.1692.0"
   },
   "bundledDependencies": [
