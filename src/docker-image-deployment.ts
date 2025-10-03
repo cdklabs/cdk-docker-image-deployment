@@ -77,13 +77,13 @@ export class DockerImageDeployment extends Construct {
     const onEventHandler = new lambda.NodejsFunction(this, 'onEventHandler', {
       entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'onEventhandler',
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_20_X,
     });
 
     const isCompleteHandler = new lambda.NodejsFunction(this, 'isCompleteHandler', {
       entry: path.join(__dirname, 'codebuild-handler/index.js'),
       handler: 'isCompleteHandler',
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_20_X,
     });
 
     // https://github.com/aws/aws-cdk/issues/21721 issue to add grant methods to codebuild
