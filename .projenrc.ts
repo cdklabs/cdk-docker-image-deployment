@@ -2,7 +2,7 @@ import { awscdk } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
   authorAddress: 'https://aws.amazon.com/',
-  cdkVersion: '2.24.0', // needed for node16
+  cdkVersion: '2.24.0',
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
   projenrcTs: true,
@@ -15,7 +15,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   gitignore: ['/cdk.out'],
   description: 'This module allows you to copy docker image assets to a repository you control. This can be necessary if you want to build a Docker image in one CDK app and consume it in a different app or outside the CDK.',
-  bundledDeps: ['@types/aws-lambda', 'aws-sdk'],
+  bundledDeps: ['@types/aws-lambda', '@aws-sdk/client-codebuild'],
   devDeps: ['esbuild'],
   releaseEnvironment: 'release',
   npmTrustedPublishing: true,

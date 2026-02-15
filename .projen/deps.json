@@ -94,11 +94,11 @@
       "type": "build"
     },
     {
-      "name": "@types/aws-lambda",
+      "name": "@aws-sdk/client-codebuild",
       "type": "bundled"
     },
     {
-      "name": "aws-sdk",
+      "name": "@types/aws-lambda",
       "type": "bundled"
     },
     {
