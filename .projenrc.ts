@@ -1,8 +1,10 @@
 import { awscdk } from 'projen';
+
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Parker Scanlon',
   authorAddress: 'https://aws.amazon.com/',
-  cdkVersion: '2.24.0',
+  cdkVersion: '2.236.0',
+  jsiiVersion: '~5.9.0',
   defaultReleaseBranch: 'main',
   name: 'cdk-docker-image-deployment',
   projenrcTs: true,

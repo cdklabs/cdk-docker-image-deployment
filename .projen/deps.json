@@ -69,12 +69,12 @@
     },
     {
       "name": "jsii-rosetta",
-      "version": "~5.8.0",
+      "version": "~5.9.0",
       "type": "build"
     },
     {
       "name": "jsii",
-      "version": "~5.8.0",
+      "version": "~5.9.0",
       "type": "build"
     },
     {
@@ -103,7 +103,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.24.0",
+      "version": "^2.236.0",
       "type": "peer"
     },
     {
