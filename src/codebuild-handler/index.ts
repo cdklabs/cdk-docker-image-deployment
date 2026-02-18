@@ -1,7 +1,11 @@
+import {
+  BatchGetBuildsCommand,
+  CodeBuildClient,
+  StartBuildCommand,
+} from '@aws-sdk/client-codebuild';
 import * as AWSLambda from 'aws-lambda';
-import * as AWS from 'aws-sdk';
 
-const cb = new AWS.CodeBuild();
+const client = new CodeBuildClient({});
 
 export async function onEventhandler(event: AWSLambda.CloudFormationCustomResourceEvent) {
   switch (event.RequestType) {
@@ -15,9 +19,11 @@ export async function onEventhandler(event: AWSLambda.CloudFormationCustomResour
 
 export async function startBuild(event: AWSLambda.CloudFormationCustomResourceEvent) {
   const projectName = event.ResourceProperties.projectName;
-  const buildOutput = await cb.startBuild({
-    projectName: projectName,
-  }).promise();
+  const buildOutput = await client.send(
+    new StartBuildCommand({
+      projectName: projectName,
+    }),
+  );
 
   const buildId = buildOutput.build?.id;
 
@@ -50,9 +56,9 @@ export async function isCompleteHandler(event: AWSLambda.CloudFormationCustomRes
     return { IsComplete: true };
   }
 
-  const build = await cb.batchGetBuilds({
+  const build = await client.send(new BatchGetBuildsCommand({
     ids: [buildId],
-  }).promise();
+  }));
 
   // we should always have a build since we have a valid buildId
   if (!build.builds || build.builds.length <= 0) {

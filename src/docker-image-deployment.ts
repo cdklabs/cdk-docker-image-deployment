@@ -91,7 +91,6 @@ export class DockerImageDeployment extends Construct {
       grantee: onEventHandler,
       actions: ['codebuild:StartBuild'],
       resourceArns: [this.cb.projectArn],
-      scope: this,
     });
 
     const grantIsComplete = iam.Grant.addToPrincipal({
@@ -101,7 +100,6 @@ export class DockerImageDeployment extends Construct {
         'codebuild:BatchGetBuilds',
       ],
       resourceArns: [this.cb.projectArn],
-      scope: this,
     });
 
     const crProvider = new cr.Provider(this, 'CRProvider', {
