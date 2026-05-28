@@ -1910,7 +1910,7 @@ constructs@10.5.1:
   resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.5.1.tgz#5b5809b4b42e49e41f88f06dea1b14837cad4694"
   integrity sha512-f/TfFXiS3G/yVIXDjOQn9oTlyu9Wo7Fxyjj7lb8r92iO81jR2uST+9MstxZTmDGx/CgIbxCXkFXgupnLTNxQZg==
 
-constructs@^10.0.0:
+constructs@^10.5.0:
   version "10.6.0"
   resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.6.0.tgz#9ec889c48567182ed9e2a56d4335d582ba0bcb6b"
   integrity sha512-TxHOnBO5zMo/G76ykzGF/wMpEHu257TbWiIxP9K0Yv/+t70UzgBQiTqjkAsWOPC6jW91DzJI0+ehQV6xDRNBuQ==
@@ -2306,9 +2306,9 @@ dunder-proto@^1.0.0, dunder-proto@^1.0.1:
     gopd "^1.2.0"
 
 electron-to-chromium@^1.5.328:
-  version "1.5.362"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.362.tgz#0696661e1e8ea46248e82f62f0a0bfe1aac2ce76"
-  integrity sha512-PUY2DrLvkjkUuWqq+KPL2iWshrJsZOcIojzRQ7eXFacc9dWga7MGMJAa15VbiejSZB1PAXaRLAiKgruHP8LB1w==
+  version "1.5.363"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.363.tgz#6e9ee6bbb98d4aa12e96853e89993990d577eec8"
+  integrity sha512-VjUKPyWzGnT1fujlkEGC/BvN70Hh70KXtAqcmniXviYlJC/ivcT+BWGPyxWVbJZLfvtKR6dqg1L7T7pgAMBtWA==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -4904,16 +4904,16 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-projen@^0.99.66:
-  version "0.99.66"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.99.66.tgz#dd04ceb7b1bfdce01ef25d8830a1cf08baefb061"
-  integrity sha512-B0zDIYCG7wZ5SP4unIFhxqiz4+66SSxk5sCdxu3Py6O8aIlc38MAVqafpgZL6ov7xv1qJ1YItAH/ZK6MiJ6U0Q==
+projen@^0.99.68:
+  version "0.99.68"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.99.68.tgz#0653e9d6093a128154f3929bd077d4e85eb01b65"
+  integrity sha512-s0E+caG9LzJTFY3cEAhLBz3IS/rsRaVQdFO/dm6X7M062ZnBn+x5q01ItdyGSaz77rP52QFPO6nT+1DYTutlYQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
     chalk "^4.1.2"
     comment-json "4.2.2"
-    constructs "^10.0.0"
+    constructs "^10.5.0"
     conventional-changelog-config-spec "^2.1.0"
     fast-glob "^3.3.3"
     fast-json-patch "^3.1.1"
