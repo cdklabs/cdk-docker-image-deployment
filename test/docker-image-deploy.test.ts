@@ -1,8 +1,8 @@
 // imports
 import * as path from 'path';
+import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import * as cdk from 'aws-cdk-lib/core';
 import * as imagedeploy from '../lib/index';
 
 describe('DockerImageDeploy', () => {
