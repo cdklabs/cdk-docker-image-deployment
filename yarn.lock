@@ -2294,9 +2294,9 @@ dunder-proto@^1.0.0, dunder-proto@^1.0.1:
     gopd "^1.2.0"
 
 electron-to-chromium@^1.5.402:
-  version "1.5.410"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.410.tgz#0901bccd2b2865960d8decee1653ad734a1b41de"
-  integrity sha512-Vq9DD7F4PKCKVmOoG6i1CQSYoF7IUtwTPEQjMXuqNs2S22H8HsojO9myaB81QuvvIKZaF6imSn3XAV1Su6rvXA==
+  version "1.5.411"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.411.tgz#d56c7e43f91e2b3abb53b4eecd646e20d0b18b34"
+  integrity sha512-gglkxzokjHfawpGxq75XdBV2/l3BAPzrsMs70qgaZdTW5rpV1tC4MdgJVP9fN126bODA4ZJQkn1wryEzJyQXIg==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -3494,9 +3494,9 @@ is-typedarray@^1.0.0:
   integrity sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==
 
 is-unsafe@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/is-unsafe/-/is-unsafe-2.0.0.tgz#c0dce4e06742662dde26360160e414ea487da2e9"
-  integrity sha512-2LdV822R+wmI86unXA93WCFpL6g+av8ynWk0nrHyJqGop5VoocYsSLFgN8jrfalT6iGeLNM4KXuVSsULP53kEA==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/is-unsafe/-/is-unsafe-2.0.2.tgz#bb1ead17f1aa688f6433258b561e98b1a45a1afc"
+  integrity sha512-HgbIHPBH0KHHCcjLfGsCvhtPTVxjaAZlXjwdz7/GQC40SjSe4sfQsar8J5VFo8JOSbarkpV0OLG95bbaNd9aAQ==
 
 is-weakmap@^2.0.2:
   version "2.0.2"
@@ -4863,10 +4863,10 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-projen@^0.101.32:
-  version "0.101.32"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.101.32.tgz#54e2b23ae86d49927fb7b2282e9bf14dc7813d7e"
-  integrity sha512-UW+eEzQ4HVPpEOlE7rdyo9z9hVVbJpIZUSfla6K2DgdU9OeYLW+2x8MNPJ/O7C1vhXFwFaqCHNQWC7XVtdZx6g==
+projen@^0.101.33:
+  version "0.101.33"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.101.33.tgz#1ff4e4f099f105b84171c8851f07b034d2f9dd99"
+  integrity sha512-vNh8Hu7hj84XikN8781ABi7m/x487HbXBA4sBBm9fBeP38fF08pVEqMDz4sHsQpOFhsCYJc96bl2e+yG9MnmUg==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
