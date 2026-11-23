@@ -4,6 +4,8 @@
 
 ### DockerImageDeployment <a name="DockerImageDeployment" id="cdk-docker-image-deployment.DockerImageDeployment"></a>
 
+- *Implements:* constructs.IConstruct, constructs.IDependable
+
 `DockerImageDeployment` pushes an image from a local or external source to a specified external destination.
 
 #### Initializers <a name="Initializers" id="cdk-docker-image-deployment.DockerImageDeployment.Initializer"></a>
